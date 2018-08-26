@@ -57,7 +57,7 @@
                 <div v-model="s" v-for="(ss, kk) in s">
                     <input type="text" v-model="ss.name">
                     <div>
-                        <input v-for="sss in ss.ab" :value="sss">
+                        <input v-for="(sss, index) in ss.ab" v-model="ss.ab[index]">
                     </div>
                 </div>
                 <input type="text" class="add">
