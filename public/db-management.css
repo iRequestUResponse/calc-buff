@@ -87,3 +87,29 @@ input.add {
     color: rgb(160, 125, 86);
     background-color: rgba(160, 125, 86, 0.25);
 }
+
+#app>a {
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    width: 64px;
+    background-color: #FFF;
+    border: 1px dashed rgb(121, 193, 252);
+    border-radius: 4px;
+    outline: none;
+    color: rgb(121, 193, 252);
+    padding: 4px;
+}
+
+#app>a:hover {
+    background-color: rgb(121, 193, 252);
+    color: #FFF;
+    cursor: default;
+}
+
+.disabled,
+.disabled:hover {
+    border: 1px dashed #dbdbdb;
+    background-color: #dbdbdb;
+    color: #FFF;
+}

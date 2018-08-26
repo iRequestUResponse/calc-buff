@@ -65,13 +65,16 @@
             <div id="addParts">
                 <span class="add" @click="toggle('addparts')">(+) 부위 추가</span>
                 <div v-show="showing.addparts">
-                    <span>부위 이름 : </span>
-                    <input type="text" v-model="partsName" @keyup.enter="vm._data.model[partsName] = []; partsName = ''">
+                    <span>부위 이름</span>
+                    <input type="text" v-model="partsName" @keyup.enter="vm._data.model[partsName] = [{name: 'test'}]; partsName = ''">
                     <button @click="vm._data.model[partsName] = [{name: 'test'}]; partsName = ''">확인</button>
                 </div>
             </div>
         </div>
         <button @click="submit" style="height: 32px; width: 128px; margin-top: 32px;">제출</button>
+        <!-- <button @click="save " style="height: 32px; width: 128px; margin-top: 32px; ">저장</button> -->
+        <a @click="save " href="# " id="jsonSave " download="data.json ">저장</a>
+        <button @click=" " style="height: 32px; width: 128px; margin-top: 32px; " class="disabled">열기</button>
     </div>
 </body>
 <script>
@@ -92,6 +95,13 @@
 
     function submit() {
         dbWrite('/shield/equipment', vm._data.model);
+    }
+
+    function save() {
+        let savedJson = JSON.stringify(vm._data.model, null, '\t');
+
+        let dataUri = "data:text/json;charset=utf-8, " + encodeURIComponent(savedJson);
+        document.getElementById('jsonSave').href = dataUri;
     }
 
     function toggle(s) {
