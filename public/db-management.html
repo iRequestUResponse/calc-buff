@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="shortcut icon" href="./favicon.ico">
+    <title>Document</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+    <!-- Firebase DB 시작 -->
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-database.js"></script>
+
+    <script>
+        // Initialize Firebase
+        // TODO: Replace with your project's customized code snippet
+        var config = {
+            // apiKey: "AIzaSyBGRyRlU5WngNW0QGBF05aJrRegoZKRc",
+            // authDomain: "calc-buff.firebaseapp.com",
+            databaseURL: "https://calc-buff.firebaseio.com/",
+            // storageBucket: "calc-buff.appspot.com",
+            // messagingSenderId: "257373652555",
+        };
+        firebase.initializeApp(config);
+
+        let db = firebase.database();
+        // let ref = db.ref();
+
+        // ref.child('user').once('value', function(data) {
+        //     console.log('test', data.val());
+        // })
+
+        function dbRead(path) {
+            return db.ref(path).once('value');
+        }
+
+        function dbWrite(path, val) {
+            db.ref(path).set(val);
+        }
+
+        Vue.config.devtools = true;
+    </script>
+    <!-- Firebase DB 끝 -->
+    <link rel="stylesheet" href="./db-management.css">
+</head>
+
+<body>
+    <div id="app" v-model="model">
+        <div>
+            <div v-for="(s, k) in model" class='parts'>
+                <input type="text" v-model="k"><button class="delete" @click="delete vm._data.model[k]; partsName = ' '; partsName = '';">삭제</button>
+                <div v-model="s" v-for="(ss, kk) in s">
+                    <input type="text" v-model="ss.name">
+                    <div>
+                        <input v-for="sss in ss.ab" :value="sss">
+                    </div>
+                </div>
+                <input type="text" class="add">
+            </div>
+            <div id="addParts">
+                <span class="add" @click="toggle('addparts')">(+) 부위 추가</span>
+                <div v-show="showing.addparts">
+                    <span>부위 이름 : </span>
+                    <input type="text" v-model="partsName" @keyup.enter="vm._data.model[partsName] = []; partsName = ''">
+                    <button @click="vm._data.model[partsName] = [{name: 'test'}]; partsName = ''">확인</button>
+                </div>
+            </div>
+        </div>
+        <button @click="submit" style="height: 32px; width: 128px; margin-top: 32px;">제출</button>
+    </div>
+</body>
+<script>
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            model: {},
+            showing: {
+                addparts: false
+            },
+            partsName: ''
+        }
+    });
+
+    dbRead('/shield/equipment').then(data => {
+        vm._data.model = data.val();
+    })
+
+    function submit() {
+        dbWrite('/shield/equipment', vm._data.model);
+    }
+
+    function toggle(s) {
+        vm._data.showing[s] = !vm._data.showing[s];
+    }
+</script>
+
+</html>

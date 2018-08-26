@@ -1,0 +1,89 @@
+* {
+    font-size: 16px;
+    color: grey;
+    user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+}
+
+#app>div {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+input {
+    border: none;
+    outline: none;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+    margin: 4px;
+    width: 256px;
+}
+
+button {
+    background-color: #FFF;
+    border: 1px dashed rgb(121, 193, 252);
+    border-radius: 4px;
+    outline: none;
+    color: rgb(121, 193, 252);
+}
+
+button:hover {
+    background-color: rgb(121, 193, 252);
+    color: #FFF;
+}
+
+#app>div>div {
+    /* display: inline-block; */
+    width: 280px;
+    box-shadow: 1px 1px 2px 0px #cecece;
+    margin: 8px;
+    padding: 4px;
+}
+
+span.add {
+    display: inline-block;
+    width: 100%;
+    color: teal;
+    font-weight: bolder;
+    cursor: pointer;
+    border: 1px dotted teal;
+    border-radius: 2px;
+}
+
+.parts>input {
+    color: #3287FC;
+    border-bottom: 1px dashed rgba(151, 151, 151, 0.5);
+    width: 64px;
+}
+
+.parts>div>input {
+    border-bottom: 1px solid rgb(160, 125, 86);
+    color: rgb(160, 125, 86);
+}
+
+.parts>div>div>input {
+    border-bottom: 1px dashed rgb(91, 158, 125);
+    color: rgb(91, 158, 125);
+}
+
+.delete {
+    background-color: #FFF;
+    border: 1px dashed rgb(252, 125, 121);
+    border-radius: 4px;
+    outline: none;
+    color: rgb(252, 125, 121);
+}
+
+.delete:hover {
+    background-color: rgb(252, 125, 121);
+    color: #FFF;
+}
+
+input.add {
+    display: block;
+    width: 256px;
+    border: none;
+    color: rgb(160, 125, 86);
+    background-color: rgba(160, 125, 86, 0.25);
+}
