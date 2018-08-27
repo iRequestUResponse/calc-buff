@@ -57,10 +57,11 @@
                 <div v-model="s" v-for="(ss, kk) in s">
                     <input type="text" v-model="ss.name">
                     <div>
-                        <input v-for="(sss, index) in ss.ab" v-model="ss.ab[index]">
+                        <input v-for="(sss, index) in ss.ab" v-model="ss.ab[index]" class="ABs">
                     </div>
                 </div>
                 <input type="text" class="add">
+                <button>추가</button>
             </div>
             <div id="addParts">
                 <span class="add" @click="toggle('addparts')">(+) 부위 추가</span>
@@ -73,7 +74,7 @@
         </div>
         <button @click="submit" style="height: 32px; width: 128px; margin-top: 32px;">제출</button>
         <!-- <button @click="save " style="height: 32px; width: 128px; margin-top: 32px; ">저장</button> -->
-        <a @click="save " href="# " id="jsonSave " download="data.json ">저장</a>
+        <a @click="save " href="# " id="jsonSave " download="data.json">저장</a>
         <button @click=" " style="height: 32px; width: 128px; margin-top: 32px; " class="disabled">열기</button>
     </div>
 </body>
