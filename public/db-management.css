@@ -10,6 +10,13 @@
 #app>div {
     display: flex;
     flex-wrap: wrap;
+    background-color: rgba(160, 125, 86, 0.02);
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+}
+
+#app>div>div {
+    background-color: #FFF;
 }
 
 input {
