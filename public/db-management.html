@@ -53,11 +53,15 @@
     <div id="app" v-model="model">
         <div>
             <div v-for="(s, k) in model" class='parts'>
-                <input type="text" v-model="k"><button class="delete" @click="delete vm._data.model[k]; partsName = ' '; partsName = '';">삭제</button>
+                <input type="text" v-model="k"><button class="delete" @click="delete vm._data.model[k]; partsName = ' '; partsName = '';">{{deleteItems}}</button>
                 <div v-model="s" v-for="(ss, kk) in s">
                     <input type="text" v-model="ss.name">
+                    <button class="delete" @click="delete vm._data.model[k]; partsName = ' '; partsName = '';">{{deleteItems}}</button>
                     <div>
-                        <input v-for="(sss, index) in ss.ab" v-model="ss.ab[index]" class="ABs">
+                        <template v-for="(sss, index) in ss.ab">
+                            <input v-model="ss.ab[index]" class="ABs">    
+                            <button v-model="ss.ab[index]" class="delete" @click="delete vm._data.model[k]; partsName = ' '; partsName = '';">{{deleteItems}}</button>
+                        </template>
                     </div>
                 </div>
                 <input type="text" class="add">
@@ -86,11 +90,12 @@
             showing: {
                 addparts: false
             },
-            partsName: ''
+            partsName: '',
+            deleteItems: 'x'
         },
         computed: {
             jsonData: function() {
-                let savedJson = JSON.stringify(vm._data.model, null, '\t');
+                let savedJson = JSON.stringify(this.model, null, '\t');
 
                 return "data:text/json;charset=utf-8," + encodeURIComponent(savedJson);
             }
