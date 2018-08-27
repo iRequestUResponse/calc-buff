@@ -74,7 +74,7 @@
         </div>
         <button @click="submit" style="height: 32px; width: 128px; margin-top: 32px;">제출</button>
         <!-- <button @click="save " style="height: 32px; width: 128px; margin-top: 32px; ">저장</button> -->
-        <a @click="save " href="# " id="jsonSave " download="data.json">저장</a>
+        <a :href="jsonData" id="jsonSave" download="data.json">저장</a>
         <button @click=" " style="height: 32px; width: 128px; margin-top: 32px; " class="disabled">열기</button>
     </div>
 </body>
@@ -87,6 +87,13 @@
                 addparts: false
             },
             partsName: ''
+        },
+        computed: {
+            jsonData: function() {
+                let savedJson = JSON.stringify(vm._data.model, null, '\t');
+
+                return "data:text/json;charset=utf-8," + encodeURIComponent(savedJson);
+            }
         }
     });
 
@@ -101,7 +108,7 @@
     function save() {
         let savedJson = JSON.stringify(vm._data.model, null, '\t');
 
-        let dataUri = "data:text/json;charset=utf-8, " + encodeURIComponent(savedJson);
+        let dataUri = "data:text/json;charset=utf-8," + encodeURIComponent(savedJson);
         document.getElementById('jsonSave').href = dataUri;
     }
 
