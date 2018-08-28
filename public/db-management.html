@@ -91,7 +91,13 @@
         },
         computed: {
             jsonData: function() {
-                let savedJson = JSON.stringify(this.model, null, '\t');
+                let savedJson = JSON.stringify(this.model, null, '\t'); <<
+                << << < HEAD
+                    ===
+                    === =
+
+                    >>>
+                    >>> > 3 fdbedeb38ddae47efb6674501fb254e29025ae0
                 return "data:text/json;charset=utf-8," + encodeURIComponent(savedJson);
             }
         },
