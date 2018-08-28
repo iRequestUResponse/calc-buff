@@ -27,14 +27,11 @@
             // messagingSenderId: "257373652555",
         };
         firebase.initializeApp(config);
-
         let db = firebase.database();
         // let ref = db.ref();
-
         // ref.child('user').once('value', function(data) {
         //     console.log('test', data.val());
         // })
-
         function dbRead(path) {
             return db.ref(path).once('value');
         }
@@ -42,7 +39,6 @@
         function dbWrite(path, val) {
             db.ref(path).set(val);
         }
-
         Vue.config.devtools = true;
     </script>
     <!-- Firebase DB 끝 -->
@@ -53,11 +49,15 @@
     <div id="app" v-model="model">
         <div>
             <div v-for="(s, k) in model" class='parts'>
-                <input type="text" v-model="k"><button class="delete" @click="delete vm._data.model[k]; partsName = ' '; partsName = '';">삭제</button>
+                <input type="text" v-model="k"><button class="delete" @click="delete model[k]; partsName = ' '; partsName = '';">{{deleteItems}}</button>
                 <div v-model="s" v-for="(ss, kk) in s">
                     <input type="text" v-model="ss.name">
+                    <button class="delete" @click="console.log(model[k]); model[k].splice(kk, 1); partsName = ' '; partsName = '';">{{deleteItems}}</button>
                     <div>
-                        <input v-for="(sss, index) in ss.ab" v-model="ss.ab[index]" class="ABs">
+                        <template v-for="(sss, index) in ss.ab">
+                            <input v-model="ss.ab[index]" class="ABs">    
+                            <button v-model="ss.ab[index]" class="delete" @click="delete vm._data.model[k];">{{deleteItems}}</button>
+                        </template>
                     </div>
                 </div>
                 <input type="text" class="add">
@@ -68,14 +68,14 @@
                 <div v-show="showing.addparts">
                     <span>부위 이름</span>
                     <input type="text" v-model="partsName" @keyup.enter="vm._data.model[partsName] = [{name: 'test'}]; partsName = ''">
-                    <button @click="vm._data.model[partsName] = [{name: 'test'}]; partsName = ''">확인</button>
+                    <button @click="model[partsName] = [{name: 'test'}]; partsName = ''">확인</button>
                 </div>
             </div>
         </div>
-        <button @click="submit" style="height: 32px; width: 128px; margin-top: 32px;">제출</button>
-        <!-- <button @click="save " style="height: 32px; width: 128px; margin-top: 32px; ">저장</button> -->
+        <button @click="submit" style="height: 32px; width: 128px;">제출</button>
+        <!-- <button @click="save " style="height: 32px; width: 128px; ">저장</button> -->
         <a :href="jsonData" id="jsonSave" download="data.json">저장</a>
-        <button @click=" " style="height: 32px; width: 128px; margin-top: 32px; " class="disabled">열기</button>
+        <button @click="" style="height: 32px; width: 128px;" class="disabled">열기</button>
     </div>
 </body>
 <script>
@@ -86,19 +86,23 @@
             showing: {
                 addparts: false
             },
-            partsName: ''
+            partsName: '',
+            deleteItems: 'x'
         },
         computed: {
             jsonData: function() {
-                let savedJson = JSON.stringify(vm._data.model, null, '\t');
-
+                let savedJson = JSON.stringify(this.model, null, '\t');
                 return "data:text/json;charset=utf-8," + encodeURIComponent(savedJson);
+            }
+        },
+        watch: {
+            model: function() {
+                return this.model;
             }
         }
     });
-
     dbRead('/shield/equipment').then(data => {
-        vm._data.model = data.val();
+        vm._data.model = eval(data.val());
     })
 
     function submit() {
@@ -107,7 +111,6 @@
 
     function save() {
         let savedJson = JSON.stringify(vm._data.model, null, '\t');
-
         let dataUri = "data:text/json;charset=utf-8," + encodeURIComponent(savedJson);
         document.getElementById('jsonSave').href = dataUri;
     }
