@@ -49,28 +49,32 @@
     <div id="app" v-model="model">
         <div>
             <div v-for="(s, k, i) in model" class='parts'>
-                <input type="text" v-model="k"><button class="delete" @click="delete model[k]; delete itemName[k]; partsName = ' '; partsName = '';">{{deleteItems}}</button>
-                <div v-model="s" v-for="(ss, kk) in s">
-                    <input type="text" v-model="ss.name">
-                    <button class="delete" @click="s.splice(kk, 1); partsName = ' '; partsName = '';">{{deleteItems}}</button>
-                    <div>
-                        <template v-for="(sss, index) in ss.ab">
-                            <input v-model="ss.ab[index]" class="ABs">
-                            <button v-model="ss.ab[index]" class="delete" @click="ss.ab.splice(index, 1);">{{deleteItems}}</button>
-                        </template>
-                        <span class="newOption" @click="if (model[k][kk].ab) model[k][kk].ab.push(null); else model[k][kk].ab = [null]; partsName = ' '; partsName = '';">옵션 추가</span>
+                <div class="partsMain">
+                    <input type="text" v-model="k"><button class="delete" @click="delete model[k]; delete itemName[k]; partsName = ' '; partsName = '';">{{deleteItems}}</button>
+                    <div v-model="s" v-for="(ss, kk) in s">
+                        <input type="text" v-model="ss.name">
+                        <button class="delete" @click="s.splice(kk, 1); partsName = ' '; partsName = '';">{{deleteItems}}</button>
+                        <div>
+                            <template v-for="(sss, index) in ss.ab">
+                                <input v-model="ss.ab[index]" class="ABs">
+                                <button v-model="ss.ab[index]" class="delete" @click="ss.ab.splice(index, 1);">{{deleteItems}}</button>
+                            </template>
+                            <span class="newOption" @click="if (model[k][kk].ab) model[k][kk].ab.push(null); else model[k][kk].ab = [null]; partsName = ' '; partsName = '';">[ 옵션 추가 ]</span>
+                        </div>
                     </div>
                 </div>
-                <template> <!-- template 태그 없어도 되는데 그냥 넣음 -->
+                <div class="partsAdd">
+                    <!-- div 태그 없어도 되는데 그냥 넣음 -->
                     <input type="text" class="add" v-model="itemName[k]" @keyup.enter="model[k].push({name:itemName[k]}); itemName[k] = '';" placeholder="장비 이름">
                     <button @click="model[k].push({name:itemName[k]}); itemName[k] = '';">추가</button>
-                </template>
+                </div>
             </div>
             <div id="addParts">
                 <span class="add" @click="toggle('addparts')">(+) 부위 추가</span>
                 <div v-show="showing.addparts">
-                    <span>부위 이름</span>
+                    <label>부위 이름
                     <input type="text" v-model="partsName" @keyup.enter="model[partsName] = [{name: ''}]; partsName = ''">
+                    </label>
                     <button @click="model[partsName] = []; partsName = ''">확인</button>
                 </div>
             </div>

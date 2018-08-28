@@ -34,7 +34,7 @@ input {
 
 button {
     background-color: #FFF;
-    border: 1px dashed rgb(121, 193, 252);
+    border: 1px dashed rgba(121, 193, 252, 0.5);
     border-radius: 4px;
     outline: none;
     color: rgb(121, 193, 252);
@@ -55,10 +55,10 @@ button:hover {
 
 span.add {
     display: inline-block;
-    width: calc(100% - 8px);
-    color: teal;
+    width: calc(100% - 10px);
+    color: rgba(0, 128, 128, 0.5);
     font-weight: bolder;
-    border: 1px dotted teal;
+    border: 1px dotted rgba(0, 128, 128, 0.5);
     border-radius: 2px;
     padding: 4px;
     margin-bottom: 8px;
@@ -66,23 +66,34 @@ span.add {
 
 span.add:hover {
     color: #FFF;
-    background-color: teal;
+    background-color: rgba(0, 128, 128, 0.5);
+    border: 1px dotted rgba(0, 128, 128, 0);
 }
 
-.parts>input {
+.partsMain {
+    height: calc(100% - 48px);
+}
+
+.partsMain>input {
     color: #3287FC;
-    border-bottom: 1px dashed rgba(151, 151, 151, 0.5);
+    text-align: center;
+    border: none;
+    border: solid rgba(50, 134, 252, 0.5);
+    border-width: 0px 1px 0px 1px;
+    border-radius: 4px;
+    /* background-color: rgb(237, 242, 250); */
     width: 64px;
 }
 
-.parts>div>input {
-    border-bottom: 1px solid rgb(160, 125, 86);
-    color: rgb(160, 125, 86);
+.partsMain>div>input {
+    border-bottom: 1px solid rgba(160, 125, 86, 0.25);
+    color: rgba(160, 125, 86, 0.75);
+    margin-top: 32px;
 }
 
-.parts>div>div>input {
-    border-bottom: 1px dashed rgb(91, 158, 125);
-    color: rgb(91, 158, 125);
+.partsMain>div>div>input {
+    border-bottom: 1px dashed rgba(91, 158, 125, 0.25);
+    color: rgba(91, 158, 125, 0.5);
 }
 
 .delete {
@@ -104,7 +115,7 @@ span.add:hover {
 input.add {
     /* display: block; */
     width: 256px;
-    border: none;
+    border: 2px solid #FFFFFF00;
     color: rgb(160, 125, 86);
     background-color: rgba(160, 125, 86, 0.25);
     margin-top: 16px;
@@ -115,13 +126,23 @@ input.add {
     color: rgb(160, 125, 86);
 }
 
+#addParts>div>input[type="text"] {
+    width: calc(100% - 96px);
+    border: solid rgba(50, 134, 252, 0.5);
+    border-width: 0px 1px 0px 1px;
+    border-radius: 4px;
+    color: rgba(50, 134, 252, 0.5);
+    padding: 0px 16px 0px 16px;
+    /* border-bottom: 1px dashed rgba(50, 134, 252, 0.5); */
+}
+
 #app>a {
     display: inline-block;
     text-align: center;
     text-decoration: none;
     width: 64px;
     background-color: #FFF;
-    border: 1px dashed rgb(121, 193, 252);
+    border: 1px dashed rgba(121, 193, 252, 0.5);
     border-radius: 4px;
     outline: none;
     color: rgb(121, 193, 252);
@@ -142,17 +163,20 @@ input.add {
 }
 
 .newOption {
-    color: teal;
+    font-size: 12px;
+    color: rgba(0, 128, 128, 0.5);
     display: inline-block;
     width: 100%;
     text-align: center;
-    border: 1px dotted rgba(0, 128, 128, 0.5);
+    /* border: 1px dotted rgba(0, 128, 128, 0.5); */
     border-radius: 2px;
 }
 
 .newOption:hover {
+    /* font-weight: bold; */
     color: #FFF;
-    background-color: teal;
+    background-color: rgba(0, 128, 128, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0);
 }
 
 .comment {
