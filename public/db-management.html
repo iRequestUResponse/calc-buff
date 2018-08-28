@@ -70,7 +70,7 @@
                 <span class="add" @click="toggle('addparts')">(+) 부위 추가</span>
                 <div v-show="showing.addparts">
                     <span>부위 이름</span>
-                    <input type="text" v-model="partsName" @keyup.enter="model[partsName] = [{name: 'test'}]; partsName = ''">
+                    <input type="text" v-model="partsName" @keyup.enter="model[partsName] = [{name: ''}]; partsName = ''">
                     <button @click="model[partsName] = []; partsName = ''">확인</button>
                 </div>
             </div>
