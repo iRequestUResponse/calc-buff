@@ -55,12 +55,18 @@ button:hover {
 
 span.add {
     display: inline-block;
-    width: 100%;
+    width: calc(100% - 8px);
     color: teal;
     font-weight: bolder;
-    cursor: pointer;
     border: 1px dotted teal;
     border-radius: 2px;
+    padding: 4px;
+    margin-bottom: 8px;
+}
+
+span.add:hover {
+    color: #FFF;
+    background-color: teal;
 }
 
 .parts>input {
@@ -105,6 +111,10 @@ input.add {
     width: calc(256px - 48px);
 }
 
+.input.add::placeholder {
+    color: rgb(160, 125, 86);
+}
+
 #app>a {
     display: inline-block;
     text-align: center;
@@ -129,4 +139,18 @@ input.add {
     border: 1px dashed #dbdbdb;
     background-color: #dbdbdb;
     color: #FFF;
+}
+
+.newOption {
+    color: teal;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    border: 1px dotted rgba(0, 128, 128, 0.5);
+    border-radius: 2px;
+}
+
+.newOption:hover {
+    color: #FFF;
+    background-color: teal;
 }
