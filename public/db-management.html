@@ -80,23 +80,8 @@
         <a :href="jsonData" id="jsonSave" download="data.json">저장</a>
         <button @click="" style="height: 32px; width: 128px;" class="disabled">열기</button>
     </div>
-    <div class='notice'>
-        <span>
-            부위명은 4글자, 나머지는 띄어쓰기 포함 8글자까지 입력 바랍니다.
-            <br>
-            옵션은 8글자 이상 괜찮습니다.
-        </span>
-        <span>
-            키워드: 영축, 보징, 용축, 수호, 용맹, 아포, 크오빅, 체력, 정신력, 체정, 지능, +, %, ...
-            <br><br>
-            키워드 사이에는 띄어쓰기가 들어가야 합니다. (+, %는 예외)
-            <br><br>
-            예시 01 : 영축 +1
-            <br>
-            예시 02 : 보징 체력 +100
-            <br>
-            예시 03 : 체력 +5%
-        </span>
+    <div class='comment'>
+        <iframe src="./comment.txt" frameborder="0"></iframe>
     </div>
 </body>
 <script>
