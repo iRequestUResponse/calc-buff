@@ -154,3 +154,8 @@ input.add {
     color: #FFF;
     background-color: teal;
 }
+
+.notice {
+    display: flex;
+    flex-direction: column;
+}
