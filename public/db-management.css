@@ -74,7 +74,9 @@ span.add:hover {
     height: calc(100% - 48px);
 }
 
-.partsMain>input {
+.partsMain>span.partsName {
+    display: inline-block;
+    margin: 4px;
     color: #3287FC;
     text-align: center;
     border: none;

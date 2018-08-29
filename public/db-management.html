@@ -61,7 +61,7 @@
         <div>
             <div v-for="(s, k, i) in model" class='parts'>
                 <div class="partsMain">
-                    <input type="text" v-model="k"><button class="delete" @click="delete model[k]; delete itemName[k]; partsName = ' '; partsName = '';">{{deleteItems}}</button>
+                    <span class="partsName">{{k}}</span><button class="delete" @click="delete model[k]; delete itemName[k]; partsName = ' '; partsName = '';">{{deleteItems}}</button>
                     <div v-model="s" v-for="(ss, kk) in s">
                         <input type="text" v-model="ss.name">
                         <button class="delete" @click="s.splice(kk, 1); partsName = ' '; partsName = '';">{{deleteItems}}</button>
