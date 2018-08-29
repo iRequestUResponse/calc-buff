@@ -46,7 +46,18 @@
 </head>
 
 <body>
-    <div id="app" v-model="model">
+    <div id="menu">
+        <span :class="{menuOption: true, active: isActive(0)}" @click="menuBehavior(0)">
+            장비 정보
+        </span>
+        <span :class="{menuOption: true, active: isActive(1)}" @click="menuBehavior(1)">
+            스킬 정보
+        </span>
+    </div>
+    <div id="app" v-model="model" v-show="visible">
+        <div class='comment'>
+            <iframe src="./comment.txt" frameborder="0"></iframe>
+        </div>
         <div>
             <div v-for="(s, k, i) in model" class='parts'>
                 <div class="partsMain">
@@ -57,7 +68,7 @@
                         <div>
                             <template v-for="(sss, index) in ss.ab">
                                 <input v-model="ss.ab[index]" class="ABs">
-                                <button v-model="ss.ab[index]" class="delete" @click="ss.ab.splice(index, 1);">{{deleteItems}}</button>
+                                <button v-model="ss.ab[index]" class="delete" @click="ss.ab.splice(index, 1); partsName = ' '; partsName = '';">{{deleteItems}}</button>
                             </template>
                             <span class="newOption" @click="if (model[k][kk].ab) model[k][kk].ab.push(null); else model[k][kk].ab = [null]; partsName = ' '; partsName = '';">[ 옵션 추가 ]</span>
                         </div>
@@ -84,12 +95,15 @@
         <a :href="jsonData" id="jsonSave" download="data.json">저장</a>
         <button @click="" style="height: 32px; width: 128px;" class="disabled">열기</button>
     </div>
-    <div class='comment'>
-        <iframe src="./comment.txt" frameborder="0"></iframe>
+    <div id="app2" v-show="visible">
+        {{test}}
     </div>
 </body>
+
 <script>
-    let vm = new Vue({
+    let vm = [];
+
+    vm.push(new Vue({
         el: '#app',
         data: {
             model: {},
@@ -98,7 +112,8 @@
             },
             partsName: '',
             deleteItems: 'x',
-            itemName: {}
+            itemName: {},
+            visible: true
         },
         computed: {
             jsonData: function() {
@@ -106,23 +121,65 @@
                 return "data:text/json;charset=utf-8," + encodeURIComponent(savedJson);
             }
         }
-    });
+    }));
+
     dbRead('/shield/equipment').then(data => {
-        vm._data.model = eval(data.val());
+        vm[0]._data.model = data.val();
     })
 
     function submit() {
-        dbWrite('/shield/equipment', vm._data.model);
-    }
-
-    function save() {
-        let savedJson = JSON.stringify(vm._data.model, null, '\t');
-        let dataUri = "data:text/json;charset=utf-8," + encodeURIComponent(savedJson);
-        document.getElementById('jsonSave').href = dataUri;
+        dbWrite('/shield/equipment', vm[0]._data.model);
     }
 
     function toggle(s) {
-        vm._data.showing[s] = !vm._data.showing[s];
+        vm[0]._data.showing[s] = !vm[0]._data.showing[s];
+    }
+
+    // app2
+
+    vm.push(new Vue({
+        el: '#app2',
+        data: {
+            model: {},
+            test: 'this is test',
+            visible: false
+        }
+    }))
+
+    dbRead('/shield/skill').then(data => {
+        vm[1]._data.model = data.val();
+        // console.log(vm[1].$data.model);
+    })
+
+    function submit2() {
+        dbWrite('/shield/skill', vm[1]._data.model);
+    }
+</script>
+
+<script>
+    let menu = new Vue({
+        el: '#menu',
+        data: {
+            visible: [true, false]
+        }
+    })
+
+    function menuBehavior(m) {
+        m = Number(m);
+
+        vm[m]._data.visible = true;
+        for (let e in vm) {
+            e = Number(e);
+            if (e === m) {
+                continue;
+            }
+            vm[e]._data.visible = false;
+        }
+    }
+
+    function isActive(m) {
+        m = Number(m);
+        return vm[m]._data.visible;
     }
 </script>
 
