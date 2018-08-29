@@ -57,13 +57,14 @@
                         <div>
                             <template v-for="(sss, index) in ss.ab">
                                 <input v-model="ss.ab[index]" class="ABs">
-                                <button v-model="ss.ab[index]" class="delete" @click="ss.ab.splice(index, 1); partsName = ' '; partsName = '';">{{deleteItems}}</button>
+                                <button v-model="ss.ab[index]" class="delete" @click="ss.ab.splice(index, 1);">{{deleteItems}}</button>
                             </template>
                             <span class="newOption" @click="if (model[k][kk].ab) model[k][kk].ab.push(null); else model[k][kk].ab = [null]; partsName = ' '; partsName = '';">[ 옵션 추가 ]</span>
                         </div>
                     </div>
                 </div>
                 <div class="partsAdd">
+                    <!-- div 태그 없어도 되는데 그냥 넣음 -->
                     <input type="text" class="add" v-model="itemName[k]" @keyup.enter="model[k].push({name:itemName[k]}); itemName[k] = '';" placeholder="장비 이름">
                     <button @click="model[k].push({name:itemName[k]}); itemName[k] = '';">추가</button>
                 </div>
@@ -83,9 +84,6 @@
         <a :href="jsonData" id="jsonSave" download="data.json">저장</a>
         <button @click="" style="height: 32px; width: 128px;" class="disabled">열기</button>
     </div>
-    <div id="app2">
-        {{test}}
-    </div>
     <div class='comment'>
         <iframe src="./comment.txt" frameborder="0"></iframe>
     </div>
@@ -100,7 +98,7 @@
             },
             partsName: '',
             deleteItems: 'x',
-            itemName: {},
+            itemName: {}
         },
         computed: {
             jsonData: function() {
@@ -109,10 +107,9 @@
             }
         }
     });
-
-    dbRead('/shield/equipment').then(function(data) {
+    dbRead('/shield/equipment').then(data => {
         vm._data.model = eval(data.val());
-    });
+    })
 
     function submit() {
         dbWrite('/shield/equipment', vm._data.model);
@@ -127,19 +124,6 @@
     function toggle(s) {
         vm._data.showing[s] = !vm._data.showing[s];
     }
-</script>
-
-<script>
-    let vm2 = new Vue({
-        el: '#app2',
-        data: {
-            model: {}
-        }
-    });
-
-    dbRead('/shield/setOption').then(function(data) {
-        vm2._data.model = eval(data.val());
-    })
 </script>
 
 </html>
