@@ -96,9 +96,38 @@
         <button @click="" style="height: 32px; width: 128px;" class="disabled">열기</button>
     </div>
     <div id="app2" v-show="visible">
-        {{test}}
+        <div class="comment"></div>
+        <div>
+            <skill-info-component :skill-info="model"></skill-info-component>
+        </div>
     </div>
 </body>
+
+<!-- skill infomation component 시작 -->
+<template id="skillInfoComponent">
+    <div>
+        {{skillInfo}}
+        <div v-for="(s, i) in skillInfo" v-model="skillInfo">
+            <div class="partsMain">
+                <span>{{s.name}}</span>
+                <button class="delete">x</button>
+                <div v-for="(ss, ii) in s.ab">
+                    {{ss}}
+                </div>
+            </div>
+            <div class="partsAdd">
+                
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    Vue.component('skill-info-component', {
+        template: '#skillInfoComponent',
+        props: ['skillInfo']
+    })
+</script>
+<!-- skill infomation component 끝 -->
 
 <script>
     let vm = [];
@@ -148,7 +177,7 @@
 
     dbRead('/shield/skill').then(data => {
         vm[1]._data.model = data.val();
-        // console.log(vm[1].$data.model);
+        console.log(vm[1].$data.model);
     })
 
     function submit2() {
@@ -157,6 +186,8 @@
 </script>
 
 <script>
+    const debug = true;
+
     let menu = new Vue({
         el: '#menu',
         data: {
@@ -181,6 +212,8 @@
         m = Number(m);
         return vm[m]._data.visible;
     }
+
+    if (debug) menuBehavior(1);
 </script>
 
 </html>
