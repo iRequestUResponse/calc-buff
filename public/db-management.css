@@ -32,6 +32,19 @@ input {
     margin-left: 16px;
 }
 
+.setName {
+    border-bottom: 1px solid rgba(58, 126, 92, 0.4) !important;
+    color: rgba(58, 126, 92, 0.4) !important;
+    margin-left: 16px;
+    font-weight: bold;
+    width: 128px;
+}
+
+.setName::placeholder {
+    color: rgba(58, 126, 92, 0.4);
+    font-weight: bold;
+}
+
 button {
     background-color: #FFF;
     border: 1px dashed rgba(121, 193, 252, 0.5);
@@ -139,7 +152,7 @@ input.add::placeholder {
     /* border-bottom: 1px dashed rgba(50, 134, 252, 0.5); */
 }
 
-#app>a {
+a {
     display: inline-block;
     text-align: center;
     text-decoration: none;
@@ -152,7 +165,7 @@ input.add::placeholder {
     padding: 4px;
 }
 
-#app>a:hover {
+a:hover {
     background-color: rgb(121, 193, 252);
     color: #FFF;
     cursor: default;
@@ -218,5 +231,55 @@ body>div {
 
 .menuOption.active {
     background-color: #3287FC;
+    color: #FFF;
+}
+
+#app2 .partsMain {
+    margin: 16px 0px 16px 0px;
+    display: flex;
+}
+
+#app2 .partsMain>div {
+    margin-right: 16px;
+}
+
+.skillName {
+    border: solid rgba(50, 134, 252, 0.5);
+    border-width: 0px 1px 0px 1px;
+    border-radius: 4px;
+    color: #3287FC;
+    padding: 4px 16px 4px 8px;
+    display: inline-block;
+}
+
+table {
+    /* background-color: rgb(91, 124, 170); */
+    border: solid rgb(160, 125, 86);
+    border-width: 0px 1px 0px 1px;
+    border-radius: 4px;
+    padding: 8px;
+}
+
+th,
+td,
+td>input {
+    color: rgb(160, 125, 86);
+}
+
+td>input {
+    width: 64px;
+    border: 2px solid #FFFFFF00;
+    color: rgb(160, 125, 86);
+    background-color: rgba(160, 125, 86, 0.25);
+}
+
+.addSkill {
+    padding: 4px;
+    border-radius: 2px;
+    border: 1px dotted rgb(160, 125, 86);
+}
+
+.addSkill:hover {
+    background-color: rgb(160, 125, 86);
     color: #FFF;
 }
