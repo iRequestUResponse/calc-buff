@@ -17,104 +17,44 @@
     <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-database.js"></script>
 
-    <script>
-        // Initialize Firebase
-        // TODO: Replace with your project's customized code snippet
-        var config = {
-            databaseURL: "https://calc-buff.firebaseio.com/"
-        };
-        firebase.initializeApp(config);
-
-        let db = firebase.database();
-
-        function dbRead(path) {
-            return db.ref(path).once('value');
-        }
-
-        function dbWrite(path, val) {
-            db.ref(path).set(val);
-        }
-
-        Vue.config.devtools = true;
-    </script>
+    <script src="init.js"></script>
 
 </head>
 
-<!-- equipment Begin -->
-<script type="text/x-template" id="equipmentSelector">
-    <div class='menuParent'>
-        <span class='parts' @click.stop="let a = visibility[id].eVisible; closeMenu(); visibility[id].eVisible = !a;">{{
-            equipments[id] ? equipments[id] : partsName
-        }}</span>
-        <!-- <span>{{equipments[id]}}</span> -->
-        <div class="menu" v-show="visibility[id].eVisible">
-            <span v-for="(s, index) in equipment" @click.stop="closeMenu(); equipments[id] = s.name;">{{s.name}} <br> </span>
+<body>
+    <div id="app" @click.stop="closeAll" @contextmenu.prevent="">
+        <div class="non-clickable">
+            <a href="./db-management.html" class="db-management-link">DB 관리</a>
+            <equipment-component :equipment-data="model.equipment" :current-equipments="equipments"></equipment-component>
         </div>
     </div>
-</script>
-<script>
-    Vue.component('equipment-selector', {
-        template: '#equipmentSelector',
-        props: {
-            partsName: {
-                type: String
-            },
-            equipment: {
-                type: Object
-            }
-        },
-        data: function() {
-            visibility.push({
-                eVisible: false
-            });
-            let id = visibility.length - 1;
+</body>
 
-            return {
-                id: id,
-                eVisible: visibility[id]
-            };
-        }
-    })
+<!-- equipment Begin -->
+<script type="text/x-template" id="equipmentComponent">
+    <div class='menuParent'>
+        <div v-for="(s, k, i) in equipmentData">
+            <div class="partsName" @click.stop="let temp = !currentEquipments[i].show; closeAll(); currentEquipments[i].show = temp;">
+                <span>{{k}}</span>
+            </div>
+            <div class="selectedEquipmentName">
+                <span>{{currentEquipments[i].name}}</span>
+            </div>
+            <div class="equipmentsName" v-show="currentEquipments[i].show">
+                <span v-for="(ss, ii) in s" @click="
+                currentEquipments[i].set = null;
+                currentEquipments[i].ab = [];
+                for (let e in ss) {
+                    currentEquipments[i][e] = ss[e];
+                }
+                    ">{{ss.name}}</span>
+            </div>
+        </div>
+        <div>
+        </div>
+    </div>
 </script>
 <!-- equipment End -->
-
-<body>
-    <div id="app" @click="closeMenu">
-        <div id="equipments">
-            <div v-for="(s, key, ind) in equipment" :id="key" class="parts">
-                <template v-for="(ss, keyy, indd) in s">
-                    <equipment-selector :parts-name="keyy" :equipment="ss" :e-visible="false"></equipment-selector>
-                </template>
-            </div>
-        </div>
-        <label style="display: inline-block; width: calc(100vw - 64px); margin: 32px 0px 0px 16px;">
-            스탯
-            <input type="text" v-model.number="calcBuff.stat">
-        </label>
-        <div id='skillSelector'>
-            <span style='display: inline-block; font-weight: bold'>
-                스킬 선택
-                <br>
-            </span>
-            <div style='display: flex; flex-direction: row; flex-wrap: wrap;'>
-                <span v-for='(v, k, ind) in skill' style="margin-bottom: 8px;">
-                    <input type="radio" :value='k' v-model='selectedSkill' :id='k'>
-                    <label :for="k" style='margin-right: 16px;'>
-                        {{k}}
-                    </label>
-                </span>
-            </div>
-            <div id="sLevel">스킬 레벨 <input type="text" v-model="calcBuff.level"></div>
-        </div>
-        <button @click="calcBuff.calc(selectedSkill)">계산</button>
-        <div id="result">
-            <span v-for='(s, key) in calcBuff.result'>
-                {{key}} : {{s}}
-            </span>
-        </div>
-    </div>
-
-</body>
 
 <script src="./index.js"></script>
 

@@ -1,131 +1,116 @@
-let equipment = {
-        left: {
-            "어깨": [],
-            "상의": [],
-            "하의": [],
-            "허리": [],
-            "신발": []
-        },
-        right1: {
-            "무기": [],
-            "칭호": [],
-            "팔찌": [],
-            "목걸이": [],
-            "반지": []
-        },
-        right2: {
-            "보조장비": [],
-            "귀걸이": [],
-            "마법석": []
-        }
-    },
-
-    selectedSkill = 0,
-
-    skill = {
-        "영광의 축복": {
-            factor: 630,
-            buff: {
-                "힘": [],
-                "지능": [],
-                "물리 공격력": [],
-                "마법 공격력": [],
-                "독립 공격력": []
-            }
-        },
-        "용맹의 축복": {
-            factor: 700,
-            buff: {
-                "힘": [],
-                "지능": [],
-                "물리 공격력": [],
-                "마법 공격력": [],
-                "독립 공격력": []
-            }
-        },
-        "아포칼립스": {
-            factor: 750,
-            buff: {
-                "힘": [],
-                "지능": []
-            }
-        },
-        "크럭스 오브 빅토리아": {
-            factor: 830,
-            buff: {
-                "힘": [],
-                "지능": []
-            }
-        }
-    },
-
-    calcBuff = {
-        stat: 0,
-        level: 0,
-        pStat: 0,
-        mStat: 1,
-        pBuff: 0,
-        mBuff: 1,
-        result: {},
-
-        calc: function(s) {
-            let targets = skill[s];
-
-            this.result = {};
-
-            for (let e in targets.buff) {
-                let _target = targets.buff[e];
-                if (typeof(_target) !== 'object') continue;
-                this.result[e] = (1 + (this.stat + this.pStat) * this.mStat / targets.factor) * (_target[this.level - 10] + this.pBuff) * this.mBuff;
-                this.result[e] = Math.round(this.result[e]);
-            }
-
-            // return result;
-        },
-        init: function() {
-            this.pStat = 0;
-            this.mStat = 1;
-            this.pBuff = 0;
-            this.mBuff = 1;
-        },
-        apply: function(t, v) {
-            if (t.toLowerCase() === 'a') {
-                this.pStat += v;
-            } else if (t.toLowerCase() === 'b') {
-                this.mStat += v;
-            } else if (t.toLowerCase() === 'c') {
-                this.pBuff += v;
-            } else if (t.toLowerCase() === 'd') {
-                this.mBuff += v;
-            } else console.error('wrong args');
-        }
-    },
-
-    visibility = [];
+Vue.component('equipment-component', {
+    template: '#equipmentComponent',
+    props: ['equipmentData', 'currentEquipments']
+});
 
 let vm = new Vue({
     el: '#app',
     data: {
-        equipment,
-        // equipments: [],
-        skill,
-        calcBuff,
-        selectedSkill
+        model: {},
+        equipments: [],
+        cheat: ''
     }
 })
 
-function closeMenu() {
-    for (let e in visibility) {
-        visibility[e].eVisible = false;
+dbRead('/shield').then(function(data) {
+    vm._data.model = data.val();
+    for (let e in vm._data.model.equipment) {
+        vm._data.equipments.push({
+            partsName: e,
+            name: '',
+            ab: [],
+            set: null,
+            show: false
+        });
+    }
+});
+
+function closeAll() {
+    for (let e in vm._data.equipments) {
+        vm._data.equipments[e].show = false;
     }
 }
 
-dbRead('/').then(data => {
-    let _data = data.val().shield.equipment;
-
-    for (let e in equipment) {
-        for (let ee in equipment[e]) {
-            equipment[e][ee] = _data[ee];
+let buff = {
+    stat: 0,
+    name: "",
+    level: 0,
+    factor: function() {
+        let map = {
+            영축: 630,
+            용축: 700,
+            아포: 750,
+            크오빅: 830
         }
+
+        return map[this.name];
+    },
+    equipments: [], // 이 속성 없애자
+    ability: {
+        statPlus: [],
+        statPercent: [],
+        skillLevel: [],
+        skillPlus: [],
+        skillPercent: []
+    },
+    getAbility: function() {
+        let eq = vm._data.equipments;
+        // let eq = vm._data.model.equipment;
+        for (let e in eq) {
+            // for (let ee in eq[e]) {
+            //     console.log(eq[e][ee].set);
+            // }
+        }
+    },
+    getSkill: function() {
+
+    },
+    getStat: function() {
+        let stat = Number(this.stat);
+        let statPercent = 1;
+
+        for (let e in this.equipments) {
+            if (e.ab) {
+                let _ab = getAB(e.ab);
+
+                if (_ab.skillName === "스탯") {
+                    let map0 = {
+                        영축: "체정",
+                        용축: "지능",
+                        아포: "체정",
+                        크오빅: "지능"
+                    }
+
+                    if (_ab.statName === map0[this.name]) {
+                        if (_ab.isP) {
+                            statPercent += _ab.val;
+                        } else {
+                            stat += _ab.val;
+                        }
+                    }
+                } else {
+                    let map1 = {
+
+                    }
+                }
+            }
+        }
+        // 스킬 레벨 올리기
+        // 스킬 주스탯 올리기
+        // 주스탯 올리기
+        // 원래 주스탯에 스킬 주스탯 올리기
+        // 원래 주스탯에 장비 주스탯 올리기
+        // 원래 주스탯에 장비 주스탯 곱하기
     }
-})
+};
+
+function getAB(STR) {
+    let keyword = STR.split(/ +/);
+
+    return {
+        skillName: keyword[0],
+        statName: keyword[1],
+        val: /[0-9]*/.exec(keyword[2])[0],
+        isP: /%/.test(keyword[2])
+    };
+}
