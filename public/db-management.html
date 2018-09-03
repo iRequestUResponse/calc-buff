@@ -101,11 +101,14 @@
     </div>
     <div id="app2" v-show="visible" v-cloak @contextmenu.prevent="">
         <!-- <div class="comment"></div> -->
+        <div class='comment'>
+            <iframe src="./comment2.txt" frameborder="0"></iframe>
+        </div>
         <skill-info-component :skill-info="model" :json-data="jsonData" :skill-info-temp="skillInfoTemp"></skill-info-component>
     </div>
     <div id="app3" v-show="visible" v-cloak @contextmenu.prevent="">
         <div class="comment">
-            <iframe src="./comment2.txt" frameborder="0"></iframe>
+            <iframe src="./comment3.txt" frameborder="0"></iframe>
         </div>
         <set-option-component :set-option-data="model" :json-data="jsonData"></set-option-component>
     </div>
