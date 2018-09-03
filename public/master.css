@@ -39,9 +39,12 @@ a.db-management-link:hover {
 .partsName {
     display: inline-block;
     width: 64px;
-    margin: 8px;
+    margin: 2px;
     padding: 4px;
-    box-shadow: 1px 1px 2px 0px grey;
+    background-color: rgb(168, 136, 106);
+    color: #FFF;
+    border-radius: 4px;
+    text-align: center;
     position: relative;
 }
 
@@ -50,8 +53,8 @@ a.db-management-link:hover {
     background-color: rgb(128, 128, 128);
     color: white;
     position: absolute;
-    transform: translate(76px, -38px);
-    padding: 8px;
+    transform: translate(74px, -31px);
+    padding: 4px;
     display: flex;
     flex-direction: column;
 }
@@ -62,4 +65,56 @@ a.db-management-link:hover {
 
 .selectedEquipmentName {
     display: inline-block;
+    border: solid rgb(168, 136, 106);
+    border-width: 0px 0px 1px 0px;
+    color: rgb(168, 136, 106);
+    margin: 4px;
+}
+
+#procSelect>button {
+    background: none;
+    border: 1px solid rgb(168, 136, 106);
+    color: rgb(168, 136, 106);
+    margin: 4px 2px 4px 2px;
+    padding: 2px 4px 2px 4px;
+    outline: none;
+}
+
+#procSelect>button:hover,
+#procSelect>button.selected {
+    /* border: 1px solid rgb(168, 136, 106); */
+    color: #FFF;
+    background-color: rgb(168, 136, 106);
+}
+
+#procStat>input {
+    border: solid rgb(168, 136, 106);
+    border-width: 0px 0px 1px 0px;
+    color: rgb(168, 136, 106);
+    outline: none;
+}
+
+#procStat>input:focus {
+    color: rgb(185, 99, 19);
+    border-color: rgb(185, 99, 19);
+}
+
+#calc {
+    width: 256px;
+    border: none;
+    background-color: rgb(155, 40, 40);
+    color: #FFF;
+    margin: 16px;
+    padding: 8px;
+    outline: none;
+}
+
+#calc:hover {
+    background-color: rgb(204, 74, 74);
+}
+
+#result {
+    background-color: rgb(150, 144, 184);
+    color: #FFF;
+    min-height: 32px;
 }
