@@ -30,7 +30,7 @@
                 <span>스킬별로 장비 및 스탯을 입력해주어야합니다</span>
             </div>
             <equipment-component :equipment-data="model.equipment" :current-equipments="equipments" :proc="proc"></equipment-component>
-            <calc-proc-component :proc="proc"></calc-proc-component>
+            <calc-proc-component :proc="proc" :buff="buff"></calc-proc-component>
         </div>
     </div>
 </body>
@@ -69,10 +69,10 @@
             <input type="text" v-for="(s, i) in proc" v-model.number="s.stat" v-show="s.check">
         </div>
         <div id="procCalc">
-            <button id="calc">계산</button>
+            <button id="calc" @click="buff.calc();">계산</button>
         </div>
         <div id="result">
-            <span></span>
+            <span v-for="(s, k, i) in buff.result">{{k}}: {{s}}, </span>
         </div>
     </div>
 </script>
