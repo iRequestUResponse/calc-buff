@@ -203,13 +203,15 @@ let vm = new Vue({
                     let _ab = getAB(this.ability[e]);
                     if (_ab.firstKey === "스탯" && _ab.secondKey === _map[this.name]) {
                         if (_ab.isP) {
-                            this.applyMultiStat += _ab.val;
+                            applyMultiStat += _ab.val;
                         } else {
-                            applyStat += _ab.val;
+                            this.applyStat += _ab.val;
                         }
                     }
                 }
+                console.log(this.applyStat, applyMultiStat);
                 this.applyStat *= applyMultiStat / 100;
+                console.log(this.applyStat);
 
                 // 스탯은 다 구함
 
@@ -284,6 +286,10 @@ let vm = new Vue({
                 for (let e in this.result) {
                     this.result[e] = Math.round(this.result[e] * (1 + this.applyStat / this.factor()));
                 }
+
+                this.applyStat = Math.round(this.applyStat);
+
+                //End of function
             }
         }
     }
