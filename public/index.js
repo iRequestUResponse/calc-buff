@@ -209,9 +209,7 @@ let vm = new Vue({
                         }
                     }
                 }
-                console.log(this.applyStat, applyMultiStat);
                 this.applyStat *= applyMultiStat / 100;
-                console.log(this.applyStat);
 
                 // 스탯은 다 구함
 
