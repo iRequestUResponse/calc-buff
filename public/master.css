@@ -3,6 +3,7 @@
     box-sizing: border-box;
     font-size: 16px;
     cursor: default;
+    font-family: 'Noto Sans kr', sans-serif;
 }
 
 #app {
@@ -15,6 +16,12 @@ div.non-clickable {
     -moz-user-select: none;
     -ms-user-select: none;
     -webkit-user-select: none;
+}
+
+.menuParent,
+#procSelect,
+.proc {
+    margin: 8px;
 }
 
 a.db-management-link {
@@ -48,6 +55,10 @@ a.db-management-link:hover {
     position: relative;
 }
 
+.partsName:hover {
+    background-color: rgb(172, 98, 30);
+}
+
 .equipmentsName {
     /* width: 128px; */
     background-color: rgb(128, 128, 128);
@@ -60,7 +71,7 @@ a.db-management-link:hover {
 }
 
 .equipmentsName>span:hover {
-    font-weight: bold;
+    text-decoration: underline;
 }
 
 .selectedEquipmentName {
@@ -87,6 +98,10 @@ a.db-management-link:hover {
     background-color: rgb(168, 136, 106);
 }
 
+#procStat>span {
+    color: rgb(185, 99, 19);
+}
+
 #procStat>input {
     border: solid rgb(168, 136, 106);
     border-width: 0px 0px 1px 0px;
@@ -104,9 +119,10 @@ a.db-management-link:hover {
     border: none;
     background-color: rgb(155, 40, 40);
     color: #FFF;
-    margin: 16px;
-    padding: 8px;
+    margin: 16px 0px 16px 0px;
+    padding: 4px;
     outline: none;
+    font-size: 24px;
 }
 
 #calc:hover {
@@ -114,7 +130,14 @@ a.db-management-link:hover {
 }
 
 #result {
+    display: inline-block;
+    width: 480px;
+    padding: 8px;
     background-color: rgb(150, 144, 184);
     color: #FFF;
     min-height: 32px;
+    user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    -webkit-user-select: text;
 }

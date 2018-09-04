@@ -5,6 +5,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     -webkit-user-select: none;
+    font-family: 'Noto Sans kr';
 }
 
 #app>div {
