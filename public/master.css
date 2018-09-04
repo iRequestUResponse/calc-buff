@@ -38,7 +38,7 @@ a.db-management-link:hover {
 
 .partsName {
     display: inline-block;
-    width: 64px;
+    width: 96px;
     margin: 2px;
     padding: 4px;
     background-color: rgb(168, 136, 106);
@@ -53,7 +53,7 @@ a.db-management-link:hover {
     background-color: rgb(128, 128, 128);
     color: white;
     position: absolute;
-    transform: translate(74px, -31px);
+    transform: translate(106px, -31px);
     padding: 4px;
     display: flex;
     flex-direction: column;

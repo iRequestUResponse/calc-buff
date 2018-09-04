@@ -93,7 +93,7 @@ let vm = new Vue({
                     if (setArray[_setName]) { // 장착중인 장비 중 세트 있는지 확인
                         let _ab = setInfo[e].ab;
                         for (let ee in _ab) {
-                            if (_ab[ee].number <= setArray[_setNAme]) {
+                            if (_ab[ee].number <= setArray[_setName]) {
                                 for (let eee in _ab[ee].option) {
                                     this.ability.push(_ab[ee].option[eee]);
                                 }
