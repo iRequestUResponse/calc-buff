@@ -72,6 +72,8 @@
             <button id="calc" @click="buff.calc();">계산</button>
         </div>
         <div id="result">
+            <span>적용 스탯 {{buff.applyStat}}, 스킬 레벨 {{buff.level}}</span>
+            <br>
             <span v-for="(s, k, i) in buff.result">{{k}}: {{s}}, </span>
             <br>
             <span v-show="buff.name === '영축' || buff.name === '아포'">(영축과 아포는 2각 풀스택 기준입니다)</span>

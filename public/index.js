@@ -57,6 +57,7 @@ let vm = new Vue({
                 마공: 0,
                 독공: 0
             },
+            applyStat: 0,
             calc: function() {
                 this.result = {
                     힘: 0,
@@ -67,6 +68,7 @@ let vm = new Vue({
                 };
                 this.ability = [];
                 this.level = 0;
+                this.applyStat = 0;
 
                 this.name = getProc();
                 let mapSkill = {};
@@ -183,10 +185,10 @@ let vm = new Vue({
                     }
                 }
 
-                let applyStat = this.stat;
+                this.applyStat = this.stat;
 
                 for (let e in plusStat) {
-                    applyStat += plusStat[e];
+                    this.applyStat += plusStat[e];
                 }
 
                 let _map = {
@@ -201,13 +203,13 @@ let vm = new Vue({
                     let _ab = getAB(this.ability[e]);
                     if (_ab.firstKey === "스탯" && _ab.secondKey === _map[this.name]) {
                         if (_ab.isP) {
-                            applyStat += _ab.val;
+                            this.applyMultiStat += _ab.val;
                         } else {
-                            applyMultiStat += _ab.val;
+                            applyStat += _ab.val;
                         }
                     }
                 }
-                applyStat *= applyMultiStat / 100;
+                this.applyStat *= applyMultiStat / 100;
 
                 // 스탯은 다 구함
 
@@ -280,7 +282,7 @@ let vm = new Vue({
                 }
 
                 for (let e in this.result) {
-                    this.result[e] = Math.round(this.result[e] * (1 + applyStat / this.factor()));
+                    this.result[e] = Math.round(this.result[e] * (1 + this.applyStat / this.factor()));
                 }
             }
         }
