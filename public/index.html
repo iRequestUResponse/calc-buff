@@ -73,6 +73,10 @@
         </div>
         <div id="result">
             <span v-for="(s, k, i) in buff.result">{{k}}: {{s}}, </span>
+            <br>
+            <span v-show="buff.name === '영축' || buff.name === '아포'">(영축과 아포는 2각 풀스택 기준입니다)</span>
+            <span v-show="buff.name === '용축' || buff.name === '크오빅'">(아리아)</span>
+            <span v-for="(s, k, i) in buff.result" v-show="buff.name === '용축' || buff.name === '크오빅'">{{k}}: {{Math.round(s*1.25)}}, </span>
         </div>
     </div>
 </script>
