@@ -65,6 +65,9 @@ let vm = new Vue({
                     마공: 0,
                     독공: 0
                 };
+                this.ability = [];
+                this.level = 0;
+
                 this.name = getProc();
                 let mapSkill = {};
                 for (let e in vm.model.skill) {
