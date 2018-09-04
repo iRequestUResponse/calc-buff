@@ -58,6 +58,13 @@ let vm = new Vue({
                 독공: 0
             },
             calc: function() {
+                this.result = {
+                    힘: 0,
+                    지능: 0,
+                    물공: 0,
+                    마공: 0,
+                    독공: 0
+                };
                 this.name = getProc();
                 let mapSkill = {};
                 for (let e in vm.model.skill) {

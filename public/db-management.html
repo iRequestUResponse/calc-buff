@@ -32,8 +32,10 @@
         // ref.child('user').once('value', function(data) {
         //     console.log('test', data.val());
         // })
-        function dbRead(path) {
-            return db.ref(path).once('value');
+        function dbRead(path, number) {
+            db.ref(path).on('value', function(data) {
+                vm[number]._data.model = data.val();
+            })
         }
 
         function dbWrite(path, val) {
@@ -229,9 +231,7 @@
         }
     }));
 
-    dbRead('/shield/equipment').then(function(data) {
-        vm[0]._data.model = data.val();
-    })
+    dbRead('/shield/equipment', 0);
 
     function submit(s, _index) {
         dbWrite('/shield/' + s, vm[_index]._data.model);
@@ -261,9 +261,7 @@
         }
     }))
 
-    dbRead('/shield/skill').then(function(data) {
-        vm[1]._data.model = data.val();
-    });
+    dbRead('/shield/skill', 1);
 
     function submit2() {
         dbWrite('/shield/skill', vm[1]._data.model);
@@ -285,9 +283,7 @@
         }
     }));
 
-    dbRead('/shield/set').then(function(data) {
-        vm[2]._data.model = data.val();
-    });
+    dbRead('/shield/set', 2);
 </script>
 
 <script>
