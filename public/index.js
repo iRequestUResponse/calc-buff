@@ -134,7 +134,7 @@ let vm = new Vue({
                 let _skill = vm.model.skill;
                 for (let e in _skill) {
                     let _skillName = _skill[e].name;
-                    if (passiveLevel[_skillName]) {
+                    if (passiveLevel[_skillName] !== undefined) {
                         passiveLevel[_skillName] = _skill[e].startlevel;
                     }
                 }
@@ -157,13 +157,14 @@ let vm = new Vue({
 
                 for (let e in this.ability) {
                     let _ab = getAB(this.ability[e]);
-                    if (plusStat[_ab.firstKey]) {
+                    if (plusStat[_ab.firstKey] !== undefined && _ab.secondKey !== "레벨") {
                         if (_ab.isP) multiStat[_ab.firstKey] += _ab.val;
                         else plusStat[_ab.firstKey] += _ab.val;
                     }
                 }
 
                 // 스킬로 인한 스탯 증가치 plusStat에 더해주기
+                // console.log(plusStat);
                 for (let e in plusStat) {
                     let _sLevel = _skill[mapSkill[e]].startlevel;
                     let _sAb = _skill[mapSkill[e]].ab;
@@ -171,7 +172,7 @@ let vm = new Vue({
                         passiveLevel[e] = _sAb.length + _sLevel - 1;
                     }
 
-                    plusStat[e] += _sAb[passiveLevel[e]].주스탯;
+                    plusStat[e] += _sAb[passiveLevel[e] - _sLevel].주스탯;
                 }
 
                 //
