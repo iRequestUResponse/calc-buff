@@ -11,6 +11,34 @@
     padding-bottom: 32px;
 }
 
+@media screen and (min-width: 800px) {
+    #app {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+.setEquip {
+    background-color: #3287FC;
+    color: #FFF;
+    padding: 4px;
+    margin: 4px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 950px;
+    max-width: 100%;
+    margin: 0;
+}
+
+.setEquip>span {
+    margin-left: 32px;
+}
+
+.setEquip>span:hover {
+    text-decoration: underline;
+}
+
 div.non-clickable {
     user-select: none;
     -moz-user-select: none;

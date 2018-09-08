@@ -30,6 +30,7 @@
                 <button :class="{selected:s.check}" v-for="(s, i) in proc" @click.stop="for (let e in proc) {proc[e].check = false;} s.check=true;">{{s.name}}</button>
                 <span>스킬별로 장비 및 스탯을 입력해주어야합니다</span>
             </div>
+            <set-component :eq="model.equipment" :sets="sets"></set-component>
             <equipment-component :equipment-data="model.equipment" :current-equipments="equipments" :proc="proc"></equipment-component>
             <calc-proc-component :proc="proc" :buff="buff"></calc-proc-component>
         </div>
@@ -79,12 +80,21 @@
             <br>
             <span v-show="buff.name === '영축' || buff.name === '아포'">(영축과 아포는 2각 풀스택 기준입니다)</span>
             <span v-show="buff.name === '용축' || buff.name === '크오빅'">(아리아)</span>
-            <span v-for="(s, k, i) in buff.result" v-show="buff.name === '용축' || buff.name === '크오빅'">{{k}}: {{Math.round(s*1.25)}}, </span>
-            <span v-show="buff.name === '용축' || buff.name === '크오빅'"><br>아리아 증폭 옵션은 아직 적용하지 않아, 25%로 계산합니다.</span>
+            <span v-for="(s, k, i) in buff.result" v-show="buff.name === '용축' || buff.name === '크오빅'">{{k}}: {{Math.round(s*buff.area/100)}}, </span>
         </div>
     </div>
 </script>
 <!-- calc proc End -->
+
+<!-- set component Begin -->
+<script id="setComponent" type="text/x-template">
+    <div class="setEquip">
+        <span v-for="(s, k, i) in sets" v-if="i > 0" @click="equipSet(event)">
+            {{k}}
+        </span>
+    </div>
+</script>
+<!-- set compoment End -->
 
 <script src="./index.js"></script>
 

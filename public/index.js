@@ -1,6 +1,33 @@
+let bus = new Vue();
+
 Vue.component('equipment-component', {
     template: '#equipmentComponent',
-    props: ['equipmentData', 'currentEquipments', 'proc']
+    props: ['equipmentData', 'currentEquipments', 'proc'],
+    created: function() {
+        bus.$on('es', function(event) {
+            let setName = event.target.innerText.trim();
+
+            let information = null;
+            for (let e in vm.sets) {
+                if (e === setName) {
+                    information = vm.sets[e]
+                    break;
+                }
+            }
+
+            let currentEQ = vm._data.equipments[getProc()];
+            for (let e in currentEQ) {
+                // console.log(currentEQ[e].partsName)
+                for (let ee in information) {
+                    if (currentEQ[e].partsName === information[ee].parts) {
+                        currentEQ[e].ab = information[ee].ab;
+                        currentEQ[e].set = setName;
+                        currentEQ[e].name = information[ee].name;
+                    }
+                }
+            }
+        })
+    }
 });
 
 Vue.component('calc-proc-component', {
@@ -17,6 +44,9 @@ let vm = new Vue({
             용축: [],
             아포: [],
             크오빅: []
+        },
+        sets: {
+            refresh: ''
         },
         proc: [{
             name: '영축',
@@ -58,6 +88,7 @@ let vm = new Vue({
                 독공: 0
             },
             applyStat: 0,
+            area: 0,
             calc: function() {
                 this.result = {
                     힘: 0,
@@ -69,6 +100,7 @@ let vm = new Vue({
                 this.ability = [];
                 this.level = 0;
                 this.applyStat = 0;
+                this.area = 125;
 
                 this.name = getProc();
                 let mapSkill = {};
@@ -139,10 +171,16 @@ let vm = new Vue({
                     }
                 }
 
-                // 레벨 증가
+                // 레벨 증가, 아리아 증폭
                 for (let e in this.ability) {
                     let _parse = getAB(this.ability[e]);
                     if (_parse.firstKey === "스탯") continue;
+                    if (_parse.firstKey === "아리아") {
+                        if (_parse.secondKey === "증폭") {
+                            this.area += _parse.val;
+                        }
+                        continue;
+                    }
                     if (_parse.secondKey !== "레벨") continue;
                     if (passiveLevel[_parse.firstKey]) passiveLevel[_parse.firstKey] += _parse.val;
                     if (_parse.firstKey === this.name) this.level += _parse.val;
@@ -289,6 +327,49 @@ let vm = new Vue({
                 this.applyStat = Math.round(this.applyStat);
 
                 //End of function
+            }
+        }
+    },
+    watch: {
+        model: function() {
+            let _eq = this.model.equipment;
+            for (let e in _eq) {
+                for (let ee in _eq[e]) {
+                    let setName = _eq[e][ee].set;
+                    if (setName) {
+                        if (!this.sets[setName]) {
+                            this.sets[setName] = [];
+                        }
+                        // console.log(_eq[e][ee]);
+                        this.sets[setName].push({
+                            name: _eq[e][ee].name,
+                            parts: e,
+                            ab: _eq[e][ee].ab ? _eq[e][ee].ab : []
+                        });
+                    }
+                }
+            }
+            this.sets.refresh = ' ';
+            this.sets.refresh = '';
+        }
+    },
+    components: {
+        'set-component': {
+            template: '#setComponent',
+            props: ['eq', 'sets'],
+            methods: {
+                equipSet: function() {
+                    bus.$emit('es', event);
+                    /*
+                    html 태그에 @input="equipSet(event)",
+                    이벤트를 받을 컴포넌트에
+                    bus.$on('es', function(event) {})
+                    그리고 여기에 bus.$emit('es', event)
+                    이렇게 했는데 크롬과 IE 모두 정상작동 되는 것처럼 보인다.
+                    하지만 이게 맞는 방식인지 아닌지 잘 모르고 한 것.
+                    따라서 검토 바람.
+                    */
+                }
             }
         }
     }
