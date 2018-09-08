@@ -286,17 +286,25 @@ let vm = new Vue({
                     if (_ab.firstKey === this.name && _ab.secondKey !== "레벨") {
                         if (_ab.isP) {
                             if (_ab.secondKey === "힘지") {
-                                _percent.힘 += _ab.val;
-                                _percent.지능 += _ab.val;
+                                // _percent.힘 += _ab.val;
+                                // _percent.지능 += _ab.val;
+                                _percent.힘 *= (1 + _ab.val * 0.01);
+                                _percent.지능 *= (1 + _ab.val * 0.01);
                             } else if (_ab.secondKey === "물마공") {
-                                _percent.물공 += _ab.val;
-                                _percent.마공 += _ab.val;
+                                // _percent.물공 += _ab.val;
+                                // _percent.마공 += _ab.val;
+                                _percent.물공 *= (1 + _ab.val * 0.01);
+                                _percent.마공 *= (1 + _ab.val * 0.01);
                             } else if (_ab.secondKey === "물마독") {
-                                _percent.물공 += _ab.val;
-                                _percent.마공 += _ab.val;
-                                _percent.독공 += _ab.val;
+                                // _percent.물공 += _ab.val;
+                                // _percent.마공 += _ab.val;
+                                // _percent.독공 += _ab.val;
+                                _percent.물공 *= (1 + _ab.val * 0.01);
+                                _percent.마공 *= (1 + _ab.val * 0.01);
+                                _percent.독공 *= (1 + _ab.val * 0.01);
                             } else {
-                                _percent[_ab.secondKey] += _ab.val;
+                                _percent[_ab.secondKey] *= (1 + _ab.val * 0.01);
+                                // _percent[_ab.secondKey] += _ab.val;
                             }
                         } else {
                             if (_ab.secondKey === "힘지") {
