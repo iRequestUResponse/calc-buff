@@ -25,7 +25,7 @@
 <body>
     <div id="app" @click.stop="closeAll" @contextmenu.prevent="">
         <div class="non-clickable">
-            <a href="./db-management.html" class="db-management-link">DB 관리</a>
+            <!-- <a href="./db-management.html" class="db-management-link">DB 관리</a> -->
             <div id="procSelect">
                 <button :class="{selected:s.check}" v-for="(s, i) in proc" @click.stop="for (let e in proc) {proc[e].check = false;} s.check=true;">{{s.name}}</button>
                 <span>스킬별로 장비 및 스탯을 입력해주어야합니다</span>

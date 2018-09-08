@@ -17,12 +17,15 @@
     <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-database.js"></script>
 
+    <!-- 로그인 기능 넣어보려고함 -->
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-auth.js"></script>
+
     <script>
         // Initialize Firebase
         // TODO: Replace with your project's customized code snippet
-        var config = {
-            // apiKey: "AIzaSyBGRyRlU5WngNW0QGBF05aJrRegoZKRc",
-            // authDomain: "calc-buff.firebaseapp.com",
+        let config = {
+            apiKey: "AIzaSyBGRyRlU5WngN-W0QGBF05aJrR-egoZKRc",
+            authDomain: "calc-buff.firebaseapp.com",
             databaseURL: "https://calc-buff.firebaseio.com/",
             // storageBucket: "calc-buff.appspot.com",
             // messagingSenderId: "257373652555",
@@ -49,6 +52,15 @@
 </head>
 
 <body>
+    <div id="login" v-show="visible">
+        <div @keyup.enter="join">
+            <input type="email" v-model="dEmail">
+            <br>
+            <input type="password" v-model="dPW">
+            <button @click.stop="join">로그인</button>
+            <p>로그인해야 사용이 가능합니다.</p>
+        </div>
+    </div>
     <a href="./" style="width: auto;">계산기로 돌아가기</a>
     <div id="menu" v-cloak @contextmenu.prevent="">
         <span :class="{menuOption: true, active: isActive(0)}" @click="menuBehavior(0)">
@@ -210,6 +222,37 @@
 <!-- set option component 끝 -->
 
 <script>
+    let fireAuth = firebase.auth();
+
+    function join() {
+        // Initialize Firebase
+        // TODO: Replace with your project's customized code snippet
+
+        fireAuth.signInWithEmailAndPassword(login.dEmail, login.dPW)
+            .then(function(firebaseUser) {
+                loginSuccess(firebaseUser);
+            })
+            .catch(function(error) {
+                alert('로그인 실패');
+                console.log(error)
+            })
+    }
+
+    function loginSuccess(firebaseUser) {
+        alert('로그인 성공');
+        login.visible = false;
+        // window.location.href = "./db-management.html";
+    }
+
+    let login = new Vue({
+        el: '#login',
+        data: {
+            visible: true,
+            dEmail: null,
+            dPW: null,
+        }
+    })
+
     let vm = [];
 
     vm.push(new Vue({

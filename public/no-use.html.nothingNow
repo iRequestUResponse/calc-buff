@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <style>
+        * {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+    </style>
+
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+
+    <!-- Firebase App is always required and must be first -->
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-auth.js"></script>
+
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
+</head>
+
+<body>
+    <div id="app">
+        <!-- The surrounding HTML is left untouched by FirebaseUI.
+         Your app may use that space for branding, controls and other customizations.-->
+        <h1>데이터 관리자</h1>
+        <div id="firebaseui-auth-container"></div>
+        <div id="loader">Loading...</div>
+
+        <div class="form-group">
+            <label for="email">이메일 주소 </label>
+            <input type="email" id="email" v-model="dEmail">
+            <label for="password">비밀번호</label>
+            <input type="paassword" id="password" v-model="dPW">
+            <button @click.stop="join">로그인</button>
+        </div>
+    </div>
+</body>
+
+<script>
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            dEmail: '',
+            dPW: '',
+            userInfo: null,
+        }
+    })
+
+    // 별로 좋지 못한 방법이겠지만 대충 만드느라 이렇게 함.
+    function $(_input) {
+        if (_input[0] === "#") {
+            return document.getElementById(/[a-z]+/.exec(_input));
+        }
+        return undefined;
+    }
+
+    let config = {
+        apiKey: "AIzaSyBGRyRlU5WngN-W0QGBF05aJrR-egoZKRc",
+        authDomain: "calc-buff.firebaseapp.com",
+        databaseURL: "https://calc-buff.firebaseio.com",
+        // projectId: "<PROJECT_ID>",
+        // storageBucket: "<BUCKET>.appspot.com",
+        // messagingSenderId: "<SENDER_ID>",
+    };
+    firebase.initializeApp(config);
+
+    function join() {
+        // Initialize Firebase
+        // TODO: Replace with your project's customized code snippet
+        firebase.auth().signInWithEmailAndPassword(vm.dEmail, vm.dPW)
+            .then(function(firebaseUser) {
+                loginSuccess(firebaseUser);
+            })
+            .catch(function(error) {
+                alert('로그인 실패');
+            })
+    }
+
+    function loginSuccess(firebaseUser) {
+        alert('로그인 성공');
+        window.location.href = "./db-management.html";
+    }
+</script>
+
+</html>
