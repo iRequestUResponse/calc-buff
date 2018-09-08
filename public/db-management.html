@@ -52,7 +52,7 @@
 </head>
 
 <body>
-    <div id="login" v-show="visible">
+    <div id="login" v-show="visible" @contextmenu.prevent="">
         <div @keyup.enter="join">
             <input type="email" v-model="dEmail">
             <br>
