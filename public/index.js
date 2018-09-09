@@ -88,6 +88,14 @@ let vm = new Vue({
                 독공: 0
             },
             applyStat: 0,
+            noDivineStat: 0,
+            noDivine: {
+                힘: 0,
+                지능: 0,
+                물공: 0,
+                마공: 0,
+                독공: 0
+            },
             area: 0,
             calc: function() {
                 this.result = {
@@ -97,9 +105,17 @@ let vm = new Vue({
                     마공: 0,
                     독공: 0
                 };
+                this.noDivine = {
+                    힘: 0,
+                    지능: 0,
+                    물공: 0,
+                    마공: 0,
+                    독공: 0
+                };
                 this.ability = [];
                 this.level = 0;
                 this.applyStat = 0;
+                this.noDivineStat = 0;
                 this.area = 125;
 
                 this.name = getProc();
@@ -248,7 +264,14 @@ let vm = new Vue({
                         }
                     }
                 }
+                if (plusStat['디바인']) {
+                    this.noDivineStat = this.applyStat - plusStat['디바인'];
+                } else {
+                    this.noDivineStat = 0;
+                }
                 this.applyStat *= applyMultiStat / 100;
+                this.noDivineStat *= applyMultiStat / 100;
+                // console.log(this.noDivineStat);
 
                 // 스탯은 다 구함
 
@@ -318,10 +341,12 @@ let vm = new Vue({
 
                 for (let e in _percent) {
                     this.result[e] *= _percent[e] / 100;
+                    this.noDivine[e] = this.result[e];
                 }
 
                 for (let e in this.result) {
                     this.result[e] = Math.round(this.result[e] * (1 + this.applyStat / this.factor()));
+                    this.noDivine[e] = Math.round(this.noDivine[e] * (1 + this.noDivineStat / this.factor()));
                 }
 
                 this.applyStat = Math.round(this.applyStat);

@@ -75,11 +75,13 @@
         <div id="result">
             <span>적용 스탯 {{buff.applyStat}} / 스킬 레벨 {{buff.level}}</span>
             <br>
-            <span v-for="(s, k, i) in buff.result">{{k}} {{s}} / </span>
+            <span style="color: #c3d7f7; font-weight: bold;">기 &nbsp;&nbsp;&nbsp;본: </span>
+            <span v-show="(buff.name === '영축' || buff.name === '아포') && s > 0" v-for="(s, k, i) in buff.noDivine">{{k}} {{s}} &nbsp;&nbsp;&nbsp;</span>
+            <span v-show="buff.name === '영축' || buff.name === '아포'" style="color: #f7c3c3; font-weight: bold;"><br>디바인: </span><span v-for="(s, k, i) in buff.result" v-show="s > 0">{{k}} {{s}} &nbsp;&nbsp;&nbsp;</span>
             <br>
-            <span v-show="buff.name === '영축' || buff.name === '아포'">(영축과 아포는 2각 풀스택 기준입니다)</span>
-            <span v-show="buff.name === '용축' || buff.name === '크오빅'">(아리아)</span>
-            <span v-for="(s, k, i) in buff.result" v-show="buff.name === '용축' || buff.name === '크오빅'">{{k}}: {{Math.round(s*buff.area/100)}}, </span>
+            <!-- <span v-show="buff.name === '영축' || buff.name === '아포'">(영축과 아포는 2각 풀스택 기준입니다)</span> -->
+            <span v-show="buff.name === '용축' || buff.name === '크오빅'" style="color: #f7c3c3; font-weight: bold;">아리아: </span>
+            <span v-for="(s, k, i) in buff.result" v-show="(buff.name === '용축' || buff.name === '크오빅') && s > 0">{{k}} {{Math.round(s*buff.area/100)}} &nbsp;&nbsp;&nbsp;</span>
         </div>
     </div>
 </script>
