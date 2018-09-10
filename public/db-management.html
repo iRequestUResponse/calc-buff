@@ -238,6 +238,16 @@
             })
     }
 
+    fireAuth.onAuthStateChanged(function(user) {
+        if (user) {
+            // User is signed in.
+            login.visible = false;
+        } else {
+            // No user is signed in.
+            login.visible = true;
+        }
+    });
+
     function loginSuccess(firebaseUser) {
         alert('로그인 성공');
         login.visible = false;
