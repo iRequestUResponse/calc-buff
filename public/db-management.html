@@ -235,11 +235,11 @@
 
         fireAuth.signInWithEmailAndPassword(login.dEmail, login.dPW)
             .then(function(firebaseUser) {
-                loginSuccess(firebaseUser);
+                // loginSuccess(firebaseUser);
             })
             .catch(function(error) {
-                alert('로그인 실패');
-                console.log(error)
+                alert('로그인 실패: 다시 시도해주세요');
+                // console.log(error)
             })
     }
 
@@ -253,11 +253,11 @@
         }
     });
 
-    function loginSuccess(firebaseUser) {
-        alert('로그인 성공');
-        login.visible = false;
-        // window.location.href = "./db-management.html";
-    }
+    // function loginSuccess(firebaseUser) {
+    //     alert('로그인 성공');
+    //     login.visible = false;
+    //     // window.location.href = "./db-management.html";
+    // }
 
     let login = new Vue({
         el: '#login',
@@ -294,6 +294,7 @@
 
     function submit(s, _index) {
         dbWrite('/shield/' + s, vm[_index]._data.model);
+        alert('제출했습니다');
     }
 
     function toggle(s) {
