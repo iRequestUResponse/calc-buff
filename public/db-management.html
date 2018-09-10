@@ -225,6 +225,11 @@
     let fireAuth = firebase.auth();
 
     function join() {
+        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .then(joinProcess);
+    }
+
+    function joinProcess() {
         // Initialize Firebase
         // TODO: Replace with your project's customized code snippet
 
