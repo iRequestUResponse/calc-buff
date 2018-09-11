@@ -12,30 +12,13 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 
-    <!-- Firebase DB 시작 -->
     <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-database.js"></script>
-
-    <!-- 로그인 기능 넣어보려고함 -->
-    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-auth.js"></script>
+    <!-- <script src="https://calc-buff.firebaseapp.com/__/firebase/init.js"></script> -->
+    <script src="./__/firebase/init.js"></script>
 
     <script>
-        // Initialize Firebase
-        // TODO: Replace with your project's customized code snippet
-        let config = {
-            apiKey: "AIzaSyBGRyRlU5WngN-W0QGBF05aJrR-egoZKRc",
-            authDomain: "calc-buff.firebaseapp.com",
-            databaseURL: "https://calc-buff.firebaseio.com/",
-            // storageBucket: "calc-buff.appspot.com",
-            // messagingSenderId: "257373652555",
-        };
-        firebase.initializeApp(config);
         let db = firebase.database();
-        // let ref = db.ref();
-        // ref.child('user').once('value', function(data) {
-        //     console.log('test', data.val());
-        // })
+
         function dbRead(path, number) {
             db.ref(path).on('value', function(data) {
                 vm[number]._data.model = data.val();
@@ -238,7 +221,7 @@
                 // loginSuccess(firebaseUser);
             })
             .catch(function(error) {
-                alert('로그인 실패: 다시 시도해주세요');
+                alert('로그인 실패 - 다시 시도해주세요');
                 // console.log(error)
             })
     }

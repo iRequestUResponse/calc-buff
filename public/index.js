@@ -400,7 +400,7 @@ let vm = new Vue({
     }
 })
 
-dbRead('/shield').then(function(data) {
+dbRead('/shield', function(data) {
     vm._data.model = data.val();
     for (let e in vm._data.model.equipment) {
         for (let ee in vm._data.equipments) {
