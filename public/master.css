@@ -169,6 +169,7 @@ a.db-management-link:hover {
 }
 
 #procCalc>input {
+    max-width: 120px;
     border: solid rgb(168, 136, 106);
     border-width: 0px 0px 1px 0px;
     color: rgb(168, 136, 106);
@@ -190,7 +191,7 @@ a.db-management-link:hover {
     background-color: rgb(155, 40, 40);
     color: #FFF;
     /* margin: 16px 0px 16px 0px; */
-    padding: 2px 8px;
+    padding: 2px 32px;
     outline: none;
     margin-left: 16px;
     /* font-size: 24px; */
