@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="shortcut icon" href="./favicon.ico">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+    <!-- <script src="https://calc-buff.firebaseapp.com/__/firebase/init.js"></script> -->
+    <script src="./__/firebase/init.js"></script>
+
+    <script>
+        let db = firebase.database();
+
+        function dbRead(path, number) {
+            db.ref(path).on('value', function(data) {
+                vm[number]._data.model = data.val();
+            })
+        }
+
+        function dbWrite(path, val) {
+            db.ref(path).set(val);
+        }
+        Vue.config.devtools = true;
+    </script>
+    <!-- Firebase DB 끝 -->
+    <link rel="stylesheet" href="./db-management.css">
+</head>
+
+<body>
+    <div id="login" v-show="visible" @contextmenu.prevent="">
+        <div @keyup.enter="join">
+            <input type="email" v-model="dEmail">
+            <br>
+            <input type="password" v-model="dPW">
+            <button @click.stop="join">로그인</button>
+            <p>로그인해야 사용이 가능합니다.</p>
+        </div>
+    </div>
+    <a href="./" style="width: auto;">계산기로 돌아가기</a>
+    <div id="menu" v-cloak @contextmenu.prevent="">
+        <span :class="{menuOption: true, active: isActive(0)}" @click="menuBehavior(0)">
+            장비 정보
+        </span>
+        <span :class="{menuOption: true, active: isActive(1)}" @click="menuBehavior(1)">
+            스킬 정보
+        </span>
+        <span :class="{menuOption: true, active: isActive(2)}" @click="menuBehavior(2)">
+            세트 정보
+        </span>
+    </div>
+    <div id="app" v-model="model" v-show="visible" v-cloak @contextmenu.prevent="">
+        <div class='comment'>
+            <iframe src="./comment1.txt" frameborder="0"></iframe>
+        </div>
+        <div>
+            <div v-for="(s, k, i) in model" class='parts'>
+                <div class="partsMain">
+                    <span class="partsName">{{k}}</span><button class="delete" @click="delete model[k]; delete itemName[k]; partsName = ' '; partsName = '';">{{deleteItems}}</button>
+                    <div v-model="s" v-for="(ss, kk) in s">
+                        <input type="text" v-model="ss.name">
+                        <button class="delete" @click="s.splice(kk, 1); partsName = ' '; partsName = '';">{{deleteItems}}</button>
+                        <div>
+                            <input type="text" class="setName" v-model="ss.set">
+                            <template v-for="(sss, index) in ss.ab">
+                                <input v-model="ss.ab[index]" class="ABs">
+                                <button v-model="ss.ab[index]" class="delete" @click="ss.ab.splice(index, 1); partsName = ' '; partsName = '';">{{deleteItems}}</button>
+                            </template>
+                            <span class="newOption" @click="if (model[k][kk].ab) model[k][kk].ab.push(null); else model[k][kk].ab = [null]; partsName = ' '; partsName = '';">[ 옵션 추가 ]</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="partsAdd">
+                    <input type="text" class="add" v-model="itemName[k]" @keyup.enter="model[k].push({name:itemName[k]}); itemName[k] = '';" placeholder="장비 이름">
+                    <button @click="model[k].push({name:itemName[k]}); itemName[k] = '';">추가</button>
+                </div>
+            </div>
+            <div id="addParts">
+                <span class="add" @click="toggle('addparts')">(+) 부위 추가</span>
+                <div v-show="showing.addparts">
+                    <label>부위 이름
+                    <input type="text" v-model="partsName" @keyup.enter="model[partsName] = [{name: ''}]; partsName = ''">
+                    </label>
+                    <button @click="model[partsName] = []; partsName = ''">확인</button>
+                </div>
+            </div>
+        </div>
+        <button @click="submit('equipment', 0)" style="height: 32px; width: 128px;">제출</button>
+        <!-- <button @click="save " style="height: 32px; width: 128px; ">저장</button> -->
+        <a :href="jsonData" id="jsonSave" download="data.json">저장</a>
+        <button @click="" style="height: 32px; width: 128px;" class="disabled">열기</button>
+    </div>
+    <div id="app2" v-show="visible" v-cloak @contextmenu.prevent="">
+        <!-- <div class="comment"></div> -->
+        <div class='comment'>
+            <iframe src="./comment2.txt" frameborder="0"></iframe>
+        </div>
+        <skill-info-component :skill-info="model" :json-data="jsonData" :skill-info-temp="skillInfoTemp"></skill-info-component>
+    </div>
+    <div id="app3" v-show="visible" v-cloak @contextmenu.prevent="">
+        <div class="comment">
+            <iframe src="./comment3.txt" frameborder="0"></iframe>
+        </div>
+        <set-option-component :set-option-data="model" :json-data="jsonData"></set-option-component>
+    </div>
+</body>
+
+<!-- skill infomation component 시작 -->
+<script type="text/x-template" id="skillInfoComponent">
+    <div>
+        <div class="partsMain">
+            <div v-for="(s, i) in skillInfo" v-model="skillInfo">
+                <span class="skillName">{{s.name}}</span>
+                <button class="delete" @click="skillInfo.splice(i, 1);">x</button>
+                <table>
+                    <thead v-if="s.ab">
+                        <th v-if="s.startlevel">레벨</th>
+                        <th>힘지능</th>
+                        <th>물마독공</th>
+                        <th>체정/지능</th>
+                    </thead>
+                    <tbody>
+                        <tr v-if="s.ab" v-for="(ss, ii) in s.ab">
+                            <td v-if="s.startlevel">{{s.startlevel+ii}}</td>
+                            <td v-if="s.ab[0].힘지"><input type="text" v-model.number="ss.힘지"></td>
+                            <td v-else><button @click="s.ab[ii]['힘지'] = 1; let temp = skillInfoTemp.name; skillInfoTemp.name = ' '; skillInfoTemp.name = temp;">힘지</button></td>
+                            <td v-if="s.ab[0].물마독"><input type="text" v-model.number="ss.물마독"></td>
+                            <td v-else><button @click="s.ab[ii]['물마독'] = 1; let temp = skillInfoTemp.name; skillInfoTemp.name = ' '; skillInfoTemp.name = temp;">물마독</button></td>
+                            <td v-if="s.ab[0].주스탯"><input type="text" v-model.number="ss.주스탯"></td>
+                            <td v-else><button @click="s.ab[ii]['주스탯'] = 1; let temp = skillInfoTemp.name; skillInfoTemp.name = ' '; skillInfoTemp.name = temp;">주스탯</button></td>
+                        </tr>
+                        <tr>
+                            <td @click="if (s.ab[s.ab.length - 1].힘지 !== null || s.ab[s.ab.length - 1].물마독 !== null || s.ab[s.ab.length - 1].주스탯 !== null) s.ab.push({힘지: null, 물마독: null, 주스탯: null});" class="addSkill" colspan="4">+</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                스킬이름: <input type="text" v-model="skillInfoTemp.name" style="width: 128px;">
+                <br> 최초레벨: <input type="text" v-model.number="skillInfoTemp.startlevel" style="width: 32px;">
+                <br><button @click="skillInfo.push({ab: [{힘지: null, 물마독: null, 주스탯: null}], name: skillInfoTemp.name, startlevel: skillInfoTemp.startlevel}); skillInfoTemp.name = ''; skillInfoTemp.startlevel = '';">[ + 새 스킬 추가 ]</button>
+            </div>
+        </div>
+        <div>
+            <button @click="submit('skill', 1)" style="height: 32px; width: 128px;">제출</button>
+            <!-- <button @click="save " style="height: 32px; width: 128px; ">저장</button> -->
+            <a :href="jsonData" id="jsonSaveSkill" download="skilldata.json">저장</a>
+            <button @click="" style="height: 32px; width: 128px;" class="disabled">열기</button>
+        </div>
+    </div>
+</script>
+<script>
+    Vue.component('skill-info-component', {
+        template: '#skillInfoComponent',
+        props: ['skillInfo', 'jsonData', 'skillInfoTemp']
+    })
+</script>
+<!-- skill infomation component 끝 -->
+
+<!-- set option component 시작 -->
+<script type="text/x-template" id="setOptionComponent">
+    <div>
+        <!-- {{setOptionData}} -->
+        <div class="partsMain">
+            <div v-for="(s, i) in setOptionData" v-model="setOptionData">
+                <input type="text" v-model="s.name" style="width: 64px;">
+                <button class="delete" @click="setOptionData.splice(i, 1);">x</button>
+                <div v-for="(ss, ii) in s.ab">
+                    <input type="text" v-model.number="ss.number" style="width: 16px;"> 세트 옵션:
+                    <div>
+                        <span v-for="(sss, iii) in ss.option">
+                            <input type="text"v-model="ss.option[iii]">
+                            <button @click="ss.option.splice(iii, 1)">-</button>
+                        </span>
+                        <button @click="ss.option.push('')">+</button>
+                    </div>
+                </div>
+                <button @click="s.ab.push({number: null, option: []})" style="margin: 32px 0px 0px 0px; width: 100%;" calss="newSetOption">새 세트 옵션</button>
+            </div>
+            <div class="newOptionButton">
+                <button @click="setOptionData.push({ab: [{number: null, option: []}], name: null});">새 세트</button>
+            </div>
+        </div>
+        <div>
+            <button @click="submit('set', 2)" style="height: 32px; width: 128px;">제출</button>
+            <!-- <button @click="save " style="height: 32px; width: 128px; ">저장</button> -->
+            <a :href="jsonData" id="jsonSaveSet" download="setoptiondata.json">저장</a>
+            <button @click="" style="height: 32px; width: 128px;" class="disabled">열기</button>
+        </div>
+    </div>
+</script>
+<script>
+    Vue.component('set-option-component', {
+        template: '#setOptionComponent',
+        props: ['setOptionData', 'jsonData']
+    })
+</script>
+<!-- set option component 끝 -->
+
+<script>
+    let fireAuth = firebase.auth();
+
+    function join() {
+        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .then(joinProcess);
+    }
+
+    function joinProcess() {
+        // Initialize Firebase
+        // TODO: Replace with your project's customized code snippet
+
+        fireAuth.signInWithEmailAndPassword(login.dEmail, login.dPW)
+            .then(function(firebaseUser) {
+                // loginSuccess(firebaseUser);
+            })
+            .catch(function(error) {
+                alert('로그인 실패 - 다시 시도해주세요');
+                // console.log(error)
+            })
+    }
+
+    fireAuth.onAuthStateChanged(function(user) {
+        if (user) {
+            // User is signed in.
+            login.visible = false;
+        } else {
+            // No user is signed in.
+            login.visible = true;
+        }
+    });
+
+    // function loginSuccess(firebaseUser) {
+    //     alert('로그인 성공');
+    //     login.visible = false;
+    //     // window.location.href = "./db-management.html";
+    // }
+
+    let login = new Vue({
+        el: '#login',
+        data: {
+            visible: true,
+            dEmail: null,
+            dPW: null,
+        }
+    })
+
+    let vm = [];
+
+    vm.push(new Vue({
+        el: '#app',
+        data: {
+            model: {},
+            showing: {
+                addparts: false
+            },
+            partsName: '',
+            deleteItems: 'x',
+            itemName: {},
+            visible: true
+        },
+        computed: {
+            jsonData: function() {
+                let savedJson = JSON.stringify(this.model, null, '\t');
+                return "data:text/json;charset=utf-8," + encodeURIComponent(savedJson);
+            }
+        }
+    }));
+
+    dbRead('/shield/equipment', 0);
+
+    function submit(s, _index) {
+        dbWrite('/shield/' + s, vm[_index]._data.model);
+        alert('제출했습니다');
+    }
+
+    function toggle(s) {
+        vm[0]._data.showing[s] = !vm[0]._data.showing[s];
+    }
+
+    // app2
+
+    vm.push(new Vue({
+        el: '#app2',
+        data: {
+            model: {},
+            visible: false,
+            skillInfoTemp: {
+                name: '',
+                startlevel: 1
+            }
+        },
+        computed: {
+            jsonData: function() {
+                let savedJson = JSON.stringify(this.model, null, '\t');
+                return "data:text/json;charset=utf-8," + encodeURIComponent(savedJson);
+            }
+        }
+    }))
+
+    dbRead('/shield/skill', 1);
+
+    function submit2() {
+        dbWrite('/shield/skill', vm[1]._data.model);
+    }
+
+    // app3
+
+    vm.push(new Vue({
+        el: '#app3',
+        data: {
+            model: {},
+            visible: false
+        },
+        computed: {
+            jsonData: function() {
+                let savedJson = JSON.stringify(this.model, null, '\t');
+                return "data:text/json;charset=utf-8," + encodeURIComponent(savedJson);
+            }
+        }
+    }));
+
+    dbRead('/shield/set', 2);
+</script>
+
+<script>
+    const debug = false;
+
+    let menu = new Vue({
+        el: '#menu',
+        data: {
+            visible: [true, false]
+        }
+    })
+
+    function menuBehavior(m) {
+        m = Number(m);
+
+        vm[m]._data.visible = true;
+        for (let e in vm) {
+            e = Number(e);
+            if (e === m) {
+                continue;
+            }
+            vm[e]._data.visible = false;
+        }
+    }
+
+    function isActive(m) {
+        m = Number(m);
+        return vm[m]._data.visible;
+    }
+
+    // if (debug) menuBehavior(1);
+</script>
+
+</html>

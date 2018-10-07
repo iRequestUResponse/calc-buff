@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="shortcut icon" href="./favicon.ico">
+    <title>Document</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+    <link rel="stylesheet" href="./master.css">
+
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+    <script src="https://calc-buff.firebaseapp.com/__/firebase/init.js"></script>
+    <!-- <script src="./__/firebase/init.js"></script> -->
+
+    <script src="init.js"></script>
+
+</head>
+
+<body>
+    <div id="app" @click.stop="closeAll" @contextmenu.prevent="">
+        <header>
+            <input type="checkbox" id="notice">
+            <label for="notice" class="notice">
+                [공지사항]
+                <span>
+                    <br>
+                    - 95레벨, 달계 적용 기준으로 계산합니다.
+                    <br>
+                    - 자료가 다 모이지 않아 레벨이 너무 높을 경우 정상적인 계산이 되지 않습니다.
+                    <br>
+                    &nbsp; &nbsp;2018-10-07 기준: 영축 10~30, 용축 10~21, 아포 11~31, 크오빅 11~20 레벨 자료 보유
+                    <br>
+                    - 용맹의 아리아 5% 증가 옵션 미적용    
+                </span>
+            </label>
+        </header>
+        <div class="non-clickable">
+            <div id="procSelect">
+                <button :class="{selected:s.check}" v-for="(s, i) in proc" @click.stop="for (let e in proc) {proc[e].check = false;} s.check=true;">{{s.name}}</button>
+                <span>스킬별로 장비 및 스탯을 입력해주어야합니다</span>
+            </div>
+            <input type="checkbox" id="setSelector" v-model="setSelector">
+            <label for="setSelector" class="setSelector">세트 선택</label>
+            <set-component :eq="model.equipment" :sets="sets" v-show="setSelector"></set-component>
+            <equipment-component :equipment-data="model.equipment" :current-equipments="equipments" :proc="proc"></equipment-component>
+            <calc-proc-component :proc="proc" :buff="buff"></calc-proc-component>
+        </div>
+        <footer>
+            Thanks to: 천공의 조각 길드원 뎐뎐님, 천공의 조각 길드원 공백헐님, NO.1 던전앤파이터 커뮤니티 던파카페 회원 인시드님
+            <br>
+            세 분들은 모두 자료 제공을 도와주셨습니다.
+        </footer>
+    </div>
+</body>
+
+<!-- equipment Begin -->
+<script type="text/x-template" id="equipmentComponent">
+    <div class='menuParent'>
+        <div v-for="(s, k, i) in equipmentData">
+            <div class="partsName" @click.stop="currentEquipments[getProc(proc)][i].name = ''; currentEquipments[getProc(proc)][i].set = null, currentEquipments[getProc(proc)][i].ab = []; let temp = !currentEquipments[getProc(proc)][i].show; closeAll(); currentEquipments[getProc(proc)][i].show = temp;">
+                <span>{{k}}</span>
+            </div>
+            <div class="selectedEquipmentName">
+                <span>{{currentEquipments[getProc(proc)][i].name}}</span>
+            </div>
+            <div class="equipmentsName" v-show="currentEquipments[getProc(proc)][i].show">
+                <span v-for="(ss, ii) in s" @click="
+                currentEquipments[getProc(proc)][i].set = null;
+                currentEquipments[getProc(proc)][i].ab = [];
+                for (let e in ss) {
+                    currentEquipments[getProc(proc)][i][e] = ss[e];
+                }
+                    ">{{ss.name}}</span>
+            </div>
+        </div>
+        <div>
+        </div>
+    </div>
+</script>
+<!-- equipment End -->
+
+<!-- calc proc Begin -->
+<script id="calcProcComponent" type="text/x-template">
+    <div class="proc">
+            <div id="procCalc">
+            <span>스탯</span>
+            <input type="text" v-for="(s, i) in proc" v-model.number="s.stat" v-show="s.check">
+            <button id="calc" @click="buff.calc();">계산</button>
+        </div>
+        <div id="result">
+                <span colspan="6">적용 스탯: {{buff.applyStat}}, 레벨: {{buff.level}}</span>
+            <table>
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td v-if="s > 0" v-for="(s, k, i) in buff.result">{{k}}</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>기본</td>
+                        <td v-show="(buff.name === '영축' || buff.name === '아포') && s > 0" v-for="(s, k, i) in buff.noDivine" class="rv">{{s}}</td>
+                        <td v-show="(buff.name === '용축' || buff.name === '크오빅') && s > 0" v-for="(s, k, i) in buff.result" class="rv">{{s}}</td>
+                    </tr>
+                    <tr v-show="buff.name === '영축' || buff.name === '아포'">
+                        <td>디바인</td>
+                        <td v-for="(s, k, i) in buff.result" v-show="s > 0" class="rv">{{s}}</td>
+                    </tr>
+                    <tr v-show="buff.name === '용축' || buff.name === '크오빅'">
+                        <td>아리아</td>
+                        <td v-for="(s, k, i) in buff.result" v-show="(buff.name === '용축' || buff.name === '크오빅') && s > 0" class="rv">{{Math.round(s*buff.area/100)}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</script>
+<!-- calc proc End -->
+
+<!-- set component Begin -->
+<script id="setComponent" type="text/x-template">
+    <div class="setEquip">
+        <span v-for="(s, k, i) in sets" v-if="i > 0" @click="equipSet(event)">
+            {{k}}
+        </span>
+    </div>
+</script>
+<!-- set compoment End -->
+
+<script src="./index.js"></script>
+
+</html>
