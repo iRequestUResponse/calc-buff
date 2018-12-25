@@ -32,29 +32,34 @@ body {
 
 .setSelector {
     /* background-color: rgb(168, 136, 106); */
-    border: 1px solid rgb(168, 136, 106);
+    /* border: 1px solid rgb(168, 136, 106); */
+    display: inline-block;
     color: rgb(168, 136, 106);
-    margin: 10px;
+    margin: 20px 10px;
     padding: 4px 16px;
     border-radius: 4px;
 }
 
+.setSelector:hover {
+    color: rgb(231, 60, 60);
+}
+
 #setSelector:checked + .setSelector {
-    background-color: rgb(168, 136, 106);
-    color: #FFF;
+    /* background-color: rgb(168, 136, 106);
+    color: #FFF; */
 }
 
 .setEquip {
     display: flex;
     flex-wrap: wrap;
     max-width: 100%;
-    margin: 0;
+    margin: -20px 0 20px 0;
     padding: 8px;
 }
 
 .setEquip>span {
     margin-left: 32px;
-    border: 1px solid rgb(168, 136, 106);
+    /* border: 1px solid rgb(168, 136, 106); */
     color: rgb(168, 136, 106);
     padding: 4px 16px;
     border-radius: 4px;
@@ -86,39 +91,24 @@ div.non-clickable {
     max-width: 100%;
 }
 
-a.db-management-link {
-    display: inline-block;
-    text-align: center;
-    text-decoration: none;
-    background-color: #FFF;
-    border: 1px dashed rgba(121, 193, 252, 0.5);
-    border-radius: 4px;
-    outline: none;
-    color: rgb(121, 193, 252);
-    padding: 4px;
-    margin: 8px;
-}
-
-a.db-management-link:hover {
-    background-color: rgb(121, 193, 252);
-    color: #FFF;
-    cursor: default;
-}
-
 .partsName {
     display: inline-block;
     width: 96px;
     margin: 2px;
     padding: 4px;
-    background-color: rgb(168, 136, 106);
-    color: #FFF;
+    color: rgb(172, 98, 30);
+    /* background-color: rgb(168, 136, 106); */
+    /* color: #FFF; */
+    box-shadow: -4px 0px 4px -4px rgb(168, 136, 106);
     border-radius: 4px;
     text-align: center;
     position: relative;
 }
 
 .partsName:hover {
-    background-color: rgb(172, 98, 30);
+    /* background-color: rgb(172, 98, 30);
+    color: #FFF; */
+    color: rgb(231, 60, 60);
 }
 
 .equipmentsName {
@@ -138,26 +128,37 @@ a.db-management-link:hover {
 
 .selectedEquipmentName {
     display: inline-block;
-    border: solid rgb(168, 136, 106);
-    border-width: 0px 0px 1px 0px;
+    box-shadow: 4px 0px 4px -4px rgb(168, 136, 106);
     color: rgb(168, 136, 106);
     margin: 4px;
+    padding-right: 1em;
 }
 
 #procSelect>button {
+    position: relative;
     background: none;
-    border: 1px solid rgb(168, 136, 106);
+    /* border: 1px solid rgb(168, 136, 106); */
+    border: none;
     color: rgb(168, 136, 106);
     margin: 4px 2px 4px 2px;
     padding: 2px 4px 2px 4px;
     outline: none;
 }
 
+#procSelect>button:not(:first-child):before {
+    content: '│';
+    position: absolute;
+    left: -.5em;
+    color: rgb(168, 136, 106);
+}
+
 #procSelect>button:hover,
 #procSelect>button.selected {
     /* border: 1px solid rgb(168, 136, 106); */
-    color: #FFF;
-    background-color: rgb(168, 136, 106);
+    /* color: #FFF;
+    background-color: rgb(168, 136, 106); */
+    box-shadow: 0px 4px 4px -4px rgb(168, 136, 106);
+    color: rgb(231, 60, 60);
 }
 
 #procCalc {
