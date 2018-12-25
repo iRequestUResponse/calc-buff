@@ -384,7 +384,7 @@ let vm = new Vue({
             template: '#setComponent',
             props: ['eq', 'sets'],
             methods: {
-                equipSet: function() {
+                equipSet: function(event) {
                     bus.$emit('es', event);
                     /*
                     html 태그에 @input="equipSet(event)",
